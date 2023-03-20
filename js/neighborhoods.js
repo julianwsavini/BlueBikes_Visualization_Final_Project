@@ -49,21 +49,35 @@ const FRAME1 = d3.select("#bostonmap")
                   .append("svg") 
                     .attr("height", FRAME_HEIGHT)   
                     .attr("width", FRAME_WIDTH)
-                   
+    
+		
+
+function handleZoom(e) {
+	d3.selectAll("circle, g")
+	.attr("transform", e.transform);
+}
+
+let zoom = d3.zoom()
+	.on("zoom", handleZoom);
+
+function initZoom() {
+	d3.select("#bostonmap")
+	  .call(zoom);
+}
 
 function build_boston_map() {
 
 
-	var g = FRAME1.append( "g" );
+	const g = FRAME1.append( "g" );
 
-	var albersProjection = d3.geoAlbers()
+	const albersProjection = d3.geoAlbers()
 	  .scale( 190000 )
 	  .rotate( [71.057,0] )
 	  .center( [0, 42.313] )
 	  .translate( [FRAME_WIDTH/2, FRAME_HEIGHT/2] );
 
-	var geoPath = d3.geoPath()
-	    .projection( albersProjection );
+	const geoPath = d3.geoPath()
+	    .projection(albersProjection);
 
 	g.selectAll( "path" )
 	  .data( neighborhoods_json.features )
@@ -73,18 +87,35 @@ function build_boston_map() {
 	  .attr("stroke", "#282F36")
 	  .attr("stroke-width", "1px")
 	  .attr( "d", geoPath );
+
+	  d3.csv("/data/start_station_data.csv").then((data) => {
+		// Add circles for each station
+		FRAME1.selectAll("circle")
+		  .data(data)
+		  .enter()
+		  .append("circle")
+			.attr("cx", (d) => albersProjection([d.station_longitude, d.station_latitude])[0])
+			.attr("cy", (d) => albersProjection([d.station_longitude, d.station_latitude])[1])
+			.attr("r", 2)
+			.attr("fill", "blue");
+	  });
+
+	  d3.csv("/data/Boston_Accidents.csv").then((data) => {
+		// Add circles for each bike crash
+		FRAME1.selectAll("circle")
+		  .data(data)
+		  .enter()
+		  .append("circle")
+			.attr("cx", (d) => albersProjection([d.long, d.lat])[0])
+			.attr("cy", (d) => albersProjection([d.long, d.lat])[1])
+			.attr("r", 1)
+			.attr("fill", "red");
+	  });
 }
 
+initZoom()
 build_boston_map();
 
-d3.csv("/data/start_station_data.csv").then((data) => {
-	// Add circles for each data point
-	FRAME1.selectAll("circle")
-	  .data(data)
-	  .enter()
-	  .append("circle")
-		.attr("cx", (d) => albersProjection([d.station_longitude, d.station_latitude])[0])
-		.attr("cy", (d) => albersProjection([d.station_longitude, d.station_latitude])[1])
-		.attr("r", 3)
-		.attr("fill", "red");
-  });
+
+
+
