@@ -15,13 +15,21 @@
 
     <div>
         <h2>Motivation</h2>
-        Biking has experienced significant growth in Boston in recent years, necessitating an equal emphasis on biker safety. To effect change, it is crucial to identify and communicate where biking poses the greatest danger in a manner accessible to all. When the community is aware of the most hazardous biking areas, it generates the necessary pressure to spur change. Therefore, we propose a visualization tool that offers valuable insights on what factors make an area more dangerous, enabling interested parties to identify risky areas and prevent injuries. Our tool also highlights areas that require safety improvements for bikers. Doing so, we will be able to improve the safety of bikers in Boston.
+
+        <p>
+        &emsp;Boston, the oldest city of the United States, is constantly evolving; urban planners are actively working alongside policymakers to promote an ergonomic and modernized city. Among these positive macrotrends within the city, is the increase in number of Bostonians using bicycles as their main form of transportation. With this increase, it has slowly been revealed over time that Boston boasts the highest rate of bicycle related fatalities and injuries. Experts have blamed this disappointing statistic on the city’s outdated infrastructure and the high population of bicyclists within city lines. It is clear that biker safety has become a pressing issue and one that needs to be addressed imminently. 
+        </p>
+
+        <p>
+        &emsp;The goal of this visualization tool is to provide meaningful insights, in an easily digestible manner, that highlight high-risk areas, dangerous Blue-bike stations, and the factors that contribute and drive the associated risks. It is pertinent to identify these areas as then a downward pressure will be placed on urban planners and government officials to address this issue. This tool can directly contribute to invoke change in city planning. The ideal use case of this visualization is for those looking to identify, understand, and locate the risks of biking across Boston. Potential end users include government engineers looking to rectify problem spots, BlueBike employees selecting a location for a new station, and the general public to pinpoint the safest travel route.   
+        </p>
+
     </div>
 
     <div>
         <h2>Background</h2>
         <h3>Data</h3>
-        
+
         <p>The project utilizes two datasets. The first dataset is from a website called Analyze Boston[3]. This data was collected by the Vision Zero Boston program. This dataset contains records of the date, time, location, and what type of vehicle was involved in the crash. There are some important details in the description of the dataset, which eliminate bias. For one, the accidents in the dataset are those which demanded public safety agency, which improves the accuracy of our dataset because all serious crashes are noted. Additionally, there are no duplicate recordings in our dataset. One incident is marked by one row in the data. However, there could be an accident that primarily involves cars and a bike, and perhaps ‘bike’ was not listed in the vehicle column. The last bias that needs to be noted is recency bias. New data is appended monthly on Analyze Boston, so we may not have accidents that occurred in March. Our data cleaning process is as follows. We first filtered the “mode_type” column to only contain rows with the value “bike”. This means only bike-related incidents are in the dataset. Furthermore, we eliminated any data before 2020, because the landscape of Boston has been changing due to improvements by city designers.
         </p>
 
