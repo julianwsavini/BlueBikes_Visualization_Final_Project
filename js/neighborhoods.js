@@ -110,6 +110,24 @@ function build_boston_map() {
 			.attr("cy", (d) => albersProjection([d.long, d.lat])[1])
 			.attr("r", 1)
 			.attr("fill", "red");
+
+		FRAME1
+			.call( d3.brush()                 // Add the brush feature using the d3.brush function
+			.extent( [ [50,50], [FRAME_WIDTH, FRAME_HEIGHT - 50] ] ) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+			.on("start brush", brushed) // Each time the brush selection changes, trigger the 'updateChart' function
+			)
+	  
+		  function brushed({selection})  {
+			if (selection) {
+			  const [[x0, y0], [x1, y1]] = selection;
+			  value = "#bostonmap"
+				.style("stroke", "none") // Initial stroke of non-selected circles
+				.style("opacity", 0.5)
+				.style("stroke", "darkorange")
+				.style("opacity", 1)
+				.data();	  
+			} 
+		  }
 	  });
 }
 
