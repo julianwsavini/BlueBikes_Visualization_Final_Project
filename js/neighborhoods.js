@@ -78,12 +78,13 @@ function build_boston_map() {
 build_boston_map();
 
 d3.csv("/data/start_station_data.csv").then((data) => {
-	FRAME1.selectAll("points")
-	.data(data)
-	.enter()
-	.append("circle")
-		.attr("cy", (d) => {return (d.station_latitude + MARGINS.bottom); })
-		.attr("cx", (d) => {return (d.station_longitude + MARGINS.left); })
+	// Add circles for each data point
+	FRAME1.selectAll("circle")
+	  .data(data)
+	  .enter()
+	  .append("circle")
+		.attr("cx", (d) => albersProjection([d.station_longitude, d.station_latitude])[0])
+		.attr("cy", (d) => albersProjection([d.station_longitude, d.station_latitude])[1])
 		.attr("r", 3)
-		.attr("fill", "red")
-})
+		.attr("fill", "red");
+  });
