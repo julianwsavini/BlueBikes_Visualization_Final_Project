@@ -69,7 +69,9 @@ function build_boston_map() {
 	  .data( neighborhoods_json.features )
 	  .enter()
 	  .append( "path" )
-	  .attr( "fill", "#ccc" )
+	  .attr( "fill", "blue" )
+	  .attr("stroke", "red")
+	  .attr("stroke-width", "5px")
 	  .attr( "d", geoPath );
 }
 

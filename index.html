@@ -4,7 +4,7 @@
 <head>
     <meta charset=utf-8/>
     <link rel="stylesheet" type="text/css" href="style.css">
-
+    <script src='js/d3.v6.1.1/d3.min.js'></script>    
     <title>Boston Biking Saftey Risk</title>
 </head>
 
@@ -30,25 +30,18 @@
         <h2>Background</h2>
         <h3>Data</h3>
 
-        <p>The project utilizes two datasets. The first dataset is from a website called Analyze Boston[3]. This data was collected by the Vision Zero Boston program. This dataset contains records of the date, time, location, and what type of vehicle was involved in the crash. There are some important details in the description of the dataset, which eliminate bias. For one, the accidents in the dataset are those which demanded public safety agency, which improves the accuracy of our dataset because all serious crashes are noted. Additionally, there are no duplicate recordings in our dataset. One incident is marked by one row in the data. However, there could be an accident that primarily involves cars and a bike, and perhaps ‘bike’ was not listed in the vehicle column. The last bias that needs to be noted is recency bias. New data is appended monthly on Analyze Boston, so we may not have accidents that occurred in March. Our data cleaning process is as follows. We first filtered the “mode_type” column to only contain rows with the value “bike”. This means only bike-related incidents are in the dataset. Furthermore, we eliminated any data before 2020, because the landscape of Boston has been changing due to improvements by city designers.
-        </p>
-
-        <p>
-        The second dataset is from Bluebikes [4]. This data is part of the Bluebikes system data, and it is collected from the bikes that customers ride. There is a lot of data collected from a singular ride. This includes trip duration (in seconds), start time, end time, the locations of the stations where the bike was picked up and dropped off, the station id and town locations, and the user type and postal code. The dataset contains bike rides from January 2023. The only concern with the dataset is if every bike checked out in January is included in the dataset. If an individual rents a bike and fails to return it to a station, the data is perhaps not recorded. We can assume this rarely happens, and this will not significantly impact our visualization tool. Our data cleaning process is as follows. First, we filtered the data to only contain the columns of interest: Trip duration, start station latitude, end station latitude, start location longitude, end station longitude, and the names of the start station and end station. Then, we created an aggregated dataset from the dataset, which contains the average ride time per each start station.
-        </p>
-
     </div>
 
     <div>
         <h2>Visualization</h2>
-        TODO: Build your visualization tool here  
+        <div id="bostonmap"></div>
     </div>
 
     <div>
         <h2>Acknowledgements</h2>
         TODO: Cite resources used here   
     </div>
-
+    <script src= "js/neighborhoods.js"></script>
 
 </body>
 
