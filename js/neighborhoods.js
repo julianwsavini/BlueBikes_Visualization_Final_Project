@@ -34,8 +34,8 @@ const neighborhoods_json = {
 
 //declare contsants
 
-const FRAME_HEIGHT = 750;
-const FRAME_WIDTH = 640;
+const FRAME_HEIGHT = 900;
+const FRAME_WIDTH = 900;
 const MARGINS = {left: 50, right: 50, top: 50, bottom: 50}
 
 
@@ -69,10 +69,21 @@ function build_boston_map() {
 	  .data( neighborhoods_json.features )
 	  .enter()
 	  .append( "path" )
-	  .attr( "fill", "blue" )
-	  .attr("stroke", "red")
-	  .attr("stroke-width", "5px")
+	  .attr( "fill", "#BFD9F5" )
+	  .attr("stroke", "#282F36")
+	  .attr("stroke-width", "1px")
 	  .attr( "d", geoPath );
 }
 
 build_boston_map();
+
+d3.csv("/data/start_station_data.csv").then((data) => {
+	FRAME1.selectAll("points")
+	.data(data)
+	.enter()
+	.append("circle")
+		.attr("cy", (d) => {return (d.station_latitude + MARGINS.bottom); })
+		.attr("cx", (d) => {return (d.station_longitude + MARGINS.left); })
+		.attr("r", 3)
+		.attr("fill", "red")
+})
