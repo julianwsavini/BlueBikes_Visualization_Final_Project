@@ -1,62 +1,61 @@
 <!DOCTYPE html>
-<html> 
-
-<head>
-    <meta charset=utf-8/>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src='js/d3.v6.1.1/d3.min.js'></script>    
-    <title>Boston Biking Saftey Risk</title>
-</head>
-
-
-<body>
-
-    <h1>Boston Biking Saftey Risk</h1>
-
-    <div>
-        <h2>Abstract</h2>
-
-        <p>
-        &emsp;Boston, the oldest city of the United States, is constantly evolving; urban planners are actively working alongside policymakers to promote an ergonomic and modernized city. Among these positive macrotrends within the city, is the increase in number of Bostonians using bicycles as their main form of transportation. With this increase, it has slowly been revealed over time that Boston boasts the highest rate of bicycle related fatalities and injuries. Experts have blamed this disappointing statistic on the city’s outdated infrastructure and the high population of bicyclists within city lines. It is clear that biker safety has become a pressing issue and one that needs to be addressed imminently. 
-        </p>
-
-        <p>
-        &emsp;The goal of this visualization tool is to provide meaningful insights, in an easily digestible manner, that highlight high-risk areas, dangerous Blue-bike stations, and the factors that contribute and drive the associated risks. It is pertinent to identify these areas as then a downward pressure will be placed on urban planners and government officials to address this issue. This tool can directly contribute to invoke change in city planning. The ideal use case of this visualization is for those looking to identify, understand, and locate the risks of biking across Boston. Potential end users include government engineers looking to rectify problem spots, BlueBike employees selecting a location for a new station, and the general public to pinpoint the safest travel route.   
-        </p>
-
-    </div>
-
-    <div>
-        <h2>Data Overview</h2>
-         <p>
-        &emsp;Our tool visualizes where the Bluebikes stations are located in Boston. Additionally, the tool shows where recent bike accidents have occured in Boston. A pie chart will indicate within the selected stations, what are the average durations of bikers? And lastly, a scatter plot will visualize bikes leaving and entering a specific station. We are working with two datasets. The bike accidents in Boston are collected by Vision Zero, and the dataset contains all bike accidents which demanded public health agency. The other data source is from the company Bluebikes. They have data on where each station is located, and the time when each customer rented a bike from a station, and returned a bike from a station.
-        </p>
-        <p>
-        &emsp;There are a few biases in our data. For one, Vision Zero only reports bike accidents that demanded public health agency. Thus, our visualization tool will only be helpful in identifying areas of Boston where the most severe bike accidents have occured. People who use Bluebikes are given information about how their data is collected, so we would not say their is anything unethical about the way in which they collect information. We found no issues with the quality of our data.
-        </p>
-        <p>
-        &emsp;Here is the link to access the Vision Zero Crash Data: <a href="https://data.boston.gov/dataset/vision-zero-crash-records">Click Here</a>
-        &emsp;Here is the link to access the Bluebike station data: <a href="https://s3.amazonaws.com/hubway-data/202301-bluebikes-tripdata.zip">Click Here</a>
-        </p>
-    </div>
-
-    <div id = "visualizations">
-        <h2>Visualization</h2>
+<html>
+    <head>
+        <meta charset=utf-8/>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src='js/d3.v6.1.1/d3.min.js'></script>    
+        <title>Boston Biking Saftey Risk</title>
+    </head>
+    <body>
+        <h1>Boston Biking Saftey Risk</h1>
         <div>
-            <div id="bostonmap" class="column"></div>
+            <h2>Abstract</h2>
+            <p>
+                &emsp;Boston, the oldest city of the United States, is constantly evolving; urban planners are actively working alongside policymakers to promote an ergonomic and modernized city. Among these positive macrotrends within the city, is the increase in number of Bostonians using bicycles as their main form of transportation. With this increase, it has slowly been revealed over time that Boston boasts the highest rate of bicycle related fatalities and injuries. Experts have blamed this disappointing statistic on the city’s outdated infrastructure and the high population of bicyclists within city lines. It is clear that biker safety has become a pressing issue and one that needs to be addressed imminently. 
+            </p>
+            <p>
+                &emsp;The goal of this visualization tool is to provide meaningful insights, in an easily digestible manner, that highlight high-risk areas, dangerous Blue-bike stations, and the factors that contribute and drive the associated risks. It is pertinent to identify these areas as then a downward pressure will be placed on urban planners and government officials to address this issue. This tool can directly contribute to invoke change in city planning. The ideal use case of this visualization is for those looking to identify, understand, and locate the risks of biking across Boston. Potential end users include government engineers looking to rectify problem spots, BlueBike employees selecting a location for a new station, and the general public to pinpoint the safest travel route.   
+            </p>
         </div>
         <div>
-            <h3>Location of Highlighted Accidents</h3>
-            <div id="accident_piechart"></div>
+            <h2>Data Overview</h2>
+            <p>
+                &emsp;Our tool visualizes where the Bluebikes stations are located in Boston. Additionally, the tool shows where recent bike accidents have occured in Boston. A pie chart will indicate within the selected stations, what are the average durations of bikers? And lastly, a scatter plot will visualize bikes leaving and entering a specific station. We are working with two datasets. The bike accidents in Boston are collected by Vision Zero, and the dataset contains all bike accidents which demanded public health agency. The other data source is from the company Bluebikes. They have data on where each station is located, and the time when each customer rented a bike from a station, and returned a bike from a station.
+            </p>
+            <p>
+                &emsp;There are a few biases in our data. For one, Vision Zero only reports bike accidents that demanded public health agency. Thus, our visualization tool will only be helpful in identifying areas of Boston where the most severe bike accidents have occured. People who use Bluebikes are given information about how their data is collected, so we would not say their is anything unethical about the way in which they collect information. We found no issues with the quality of our data. Here is the link to access the Vision Zero Crash Data: <a href="https://data.boston.gov/dataset/vision-zero-crash-records">click here</a>. And here is the link to access the Bluebike station data: <a href="https://s3.amazonaws.com/hubway-data/202301-bluebikes-tripdata.zip">click here</a>.
+            </p>
         </div>
-    </div>
 
-    <div>
-        <h2>Acknowledgements</h2>
-        TODO: Cite resources used here   
-    </div>
-    <script src= "js/neighborhoods.js"></script>
+        <div class = "columns-div">
+            <div id = "left_col" class = "column">
+                <h2>Visualization</h2>
+                <div style="outline: 1px solid black; height: 100%;">
+                    <div id="bostonmap" class="column"></div>
+                </div>
+            </div>
+            <div id = "right_col" class = "column">
+                <h2>
+                Location of Highlighted Accidents</h3>
+                <div id="accident_piechart"></div>
+            </div>
+        </div>
 
-</body>
+        <button class="button" onClick="window.location.reload();">Reset Zoom</button>
 
+        <div id="footer">
+            <h2>Acknowledgements</h2>
+            <ul id="Acknowledgements">
+                <li><a href="https://github.com/DS4200-S23-Class/hw-06-aneek-and-jake/blob/master/index.html">https://github.com/DS4200-S23-Class/hw-06-aneek-and-jake/blob/master/index.html</a></li>
+                <li><a href="https://www.d3indepth.com/zoom-and-pan/">https://www.d3indepth.com/zoom-and-pan/</a></li>
+                <li><a href="https://d3-graph-gallery.com/graph/interactivity_brush.html">https://d3-graph-gallery.com/graph/interactivity_brush.html</a></li>
+                <li><a href="https://www.pluralsight.com/guides/create-tooltips-in-d3js">https://www.pluralsight.com/guides/create-tooltips-in-d3js</a></li>
+                <li><a href="https://stackoverflow.com/questions/47917730/d3-line-and-points-on-map-from-csv-data">https://stackoverflow.com/questions/47917730/d3-line-and-points-on-map-from-csv-data</a></li>
+                <li><a href="https://maptimeboston.github.io/d3-maptime/#/">https://maptimeboston.github.io/d3-maptime/#/</a></li>
+                <li><a href="https://data.boston.gov/dataset/vision-zero-crash-records">https://data.boston.gov/dataset/vision-zero-crash-records</a></li>
+                <li><a href=""></a></li>
+            </ul>
+        </div>
+        <script src= "js/script.js"></script>
+    </body>
 </html>
