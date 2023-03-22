@@ -129,7 +129,7 @@ function build_boston_map() {
 	  });
 
 	// Create tooltip
-	var TOOLTIP = d3.select(#bostonmap)
+	var TOOLTIP = d3.select("#bostonmap")
 		.append('div')
 	  	.attr("class", "tooltip")
 	  	.style("opacity", 1); 
