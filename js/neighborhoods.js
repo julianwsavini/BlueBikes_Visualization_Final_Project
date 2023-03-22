@@ -127,6 +127,37 @@ function build_boston_map() {
 			.attr("r", 1)
 			.attr("fill", "red");
 	  });
+
+	// Create tooltip
+	const TOOLTIP = d3.select("#bostonmap")
+	.append("div")
+	  .attr("class", "tooltip")
+	  .style("opacity", 1); 
+
+	// Define event handler functions for tooltips
+	function handleMouseover(event, d) {
+	// on mouseover, make opaque 
+	TOOLTIP.style("opacity", 1); 
+	}
+
+	function handleMousemove(event, d) {
+	// position the tooltip and fill in information 
+	TOOLTIP.html("Name: " + d.start_station_name + "<br>Average trip duration: " + d.Average_trip_duration + "<br>Bikes Leaving Station: " + d.bikes_leaving)
+		.style("left", (event.pageX + 10) + "px") //add offset
+												  // from mouse
+	 	.style("top", (event.pageY - 50) + "px");
+	}
+
+	function handleMouseleave(event, d) {
+	// on mouseleave, make transparant again 
+	TOOLTIP.style("opacity", 0); 
+	} 
+
+	// Add event listeners
+	FRAME1.selectAll("circle")
+ 	.on("mouseover", handleMouseover)
+ 	.on("mousemove", handleMousemove)
+ 	.on("mouseleave", handleMouseleave);  
 }
 
 function create_brush() {
