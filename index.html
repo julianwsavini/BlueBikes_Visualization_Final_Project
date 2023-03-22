@@ -14,7 +14,7 @@
     <h1>Boston Biking Saftey Risk</h1>
 
     <div>
-        <h2>Motivation</h2>
+        <h2>Abstract</h2>
 
         <p>
         &emsp;Boston, the oldest city of the United States, is constantly evolving; urban planners are actively working alongside policymakers to promote an ergonomic and modernized city. Among these positive macrotrends within the city, is the increase in number of Bostonians using bicycles as their main form of transportation. With this increase, it has slowly been revealed over time that Boston boasts the highest rate of bicycle related fatalities and injuries. Experts have blamed this disappointing statistic on the city’s outdated infrastructure and the high population of bicyclists within city lines. It is clear that biker safety has become a pressing issue and one that needs to be addressed imminently. 
@@ -27,12 +27,19 @@
     </div>
 
     <div>
-        <h2>Background</h2>
-        <h3>Data</h3>
+        <h2>Data Overview</h2>
+
+        <p>
+        &emsp;Our tool visualizes where the Bluebikes stations are located in Boston. Additionally, the tool shows where recent bike accidents have occured in Boston. A pie chart will indicate within the selected stations, what are the average durations of bikers? And lastly, a scatter plot will visualize bikes leaving and entering a specific station. We are working with two datasets. The bike accidents in Boston are collected by Vision Zero, and the dataset contains all bike accidents which demanded public health agency. The other data source is from the company Bluebikes. They have data on where each station is located, and the time when each customer rented a bike from a station, and returned a bike from a station.
+        </p>
+
+        <p>
+        &emsp;There are a few biases in our data. For one, Vision Zero only reports bike accidents that demanded public health agency. Thus, our visualization tool will only be helpful in identifying areas of Boston where the most severe bike accidents have occured. People who use Bluebikes are given information about how their data is collected, so we would not say their is anything unethical about the way in which they collect information. We found no issues with the quality of our data. The link to access the Vision Zero Crash Data is <a href="https://data.boston.gov/dataset/vision-zero-crash-records">here</a>. The link to access the Bluebike station data is <a href="https://s3.amazonaws.com/hubway-data/202301-bluebikes-tripdata.zip">here</a>.
+        </p>
 
     </div>
 
-    <div>
+    <div id = "visualizations">
         <h2>Visualization</h2>
         <div id="bostonmap"></div>
         <input type="radio" id="zoom" name="toggle" value="zoom">
