@@ -65,7 +65,7 @@ function zoom() {
     });
 
   function handleZoom(e) {
-    d3.selectAll("circle, g")
+    FRAME1.selectAll("image, g, circle")
       .attr("transform", e.transform);
   }
 
@@ -102,17 +102,17 @@ function build_boston_map() {
 		FRAME1.selectAll(".circle")
 		   .data(data)
 		   .enter()
-		   .append("circle")
-			.attr("cx", (d) => albersProjection([d.station_longitude, d.station_latitude])[0])
-			.attr("cy", (d) => albersProjection([d.station_longitude, d.station_latitude])[1])
-			.attr("r", 2)
-			.attr("fill", "blue");
-			// .append("image")
-			// .attr("x", (d) => albersProjection([d.station_longitude, d.station_latitude])[0])
-			// .attr("y", (d) => albersProjection([d.station_longitude, d.station_latitude])[1])
-			// .attr("width", 10)
-			// .attr("height", 10)
-			// .attr("xlink:href", "images/bluebike.png");
+		//    .append("circle")
+		// 	.attr("cx", (d) => albersProjection([d.station_longitude, d.station_latitude])[0])
+		// 	.attr("cy", (d) => albersProjection([d.station_longitude, d.station_latitude])[1])
+		// 	.attr("r", 2)
+		// 	.attr("fill", "blue");
+			.append("image")
+			.attr("x", (d) => albersProjection([d.station_longitude, d.station_latitude])[0])
+			.attr("y", (d) => albersProjection([d.station_longitude, d.station_latitude])[1])
+			.attr("width", 10)
+			.attr("height", 10)
+			.attr("xlink:href", "images/bluebike.png");
 	  });
 
 	  d3.csv("/data/Boston_Accidents.csv").then((data) => {
@@ -187,7 +187,7 @@ function create_brush() {
 function add_key() {
 	// Define the data for the key
 	const keyData = [
-	  { label: "Bluebike Stations", color: "blue" },
+	  { label: "Bluebike Stations", color: "#00ffff" },
 	  { label: "Bike Crash Locations", color: "red" }
 	];
   
@@ -222,10 +222,67 @@ function add_key() {
   }
   
 
+  function pie_chart() {
+	const FRAME2 = d3.select("#accident_piechart") 
+                  .append("svg") 
+                    .attr("height", 450)   
+                    .attr("width", 450)
+// Set up placeholder data
+	var data = [
+		{ location: 'Street', count: 10 },
+		{ location: 'Intersection', count: 5 },
+		{ location: 'Other', count: 5 }
+	];
+	
+	// Set up the dimensions for the SVG container
+	var width = 400;
+	var height = 400;
+	
+	// Set up the pie chart layout
+	var pie = d3.pie()
+		.value(function(d) { return d.count; });
+	
+	// Create an arc generator for the pie slices
+	var arc = d3.arc()
+		.innerRadius(0)
+		.outerRadius(Math.min(width, height) / 2 - 1);
+	
+	// Create a color scale for the pie slices
+	var color = d3.scaleOrdinal()
+		.domain(data.map(function(d) { return d.location; }))
+		.range(['#4daf4a', '#377eb8', '#ff7f00']);
+	
+	// Add a group element to hold the pie chart
+	var g = FRAME2.append('g')
+		.attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
+	
+	// Create the pie slices
+	var slices = g.selectAll('path')
+		.data(pie(data))
+		.enter()
+		.append('path')
+		.attr('d', arc)
+		.attr('fill', function(d) { return color(d.data.location); });
+
+	// add labels
+	var labels = g.selectAll('text')
+		.data(pie(data))
+		.enter()
+		.append('text')
+		.text(function(d) { return d.data.location + ' (' + d.data.count + ')'; })
+		.attr('transform', function(d) { return 'translate(' + arc.centroid(d) + ')'; })
+		.style('text-anchor', 'middle')
+		.style('font-size', '15px')
+		.style('font-weight', 'bold')
+		.style('fill', 'white');
+}
+
 zoom()
 build_boston_map();
+pie_chart();
 add_key();
 create_brush()
+
 
 
 

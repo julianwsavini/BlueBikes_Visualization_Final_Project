@@ -6,10 +6,13 @@ h1 {
     text-align: center;
 }
 
+
 #bostonmap {
     stroke: black;
-    stroke-width: 2px;
+    stroke-width: 1px;
 }
+
+
 
 .tooltip {
     position: absolute;
