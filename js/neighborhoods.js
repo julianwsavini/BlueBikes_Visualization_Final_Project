@@ -184,9 +184,47 @@ function create_brush() {
   }
 }
 
+function add_key() {
+	// Define the data for the key
+	const keyData = [
+	  { label: "Bluebike Stations", color: "blue" },
+	  { label: "Bike Crash Locations", color: "red" }
+	];
+  
+	// Create a new SVG group element for the key
+	const keyGroup = FRAME1.append("g")
+	  .attr("class", "key")
+	  .attr("transform", `translate(${MARGINS.left}, ${MARGINS.top})`);
+  
+	// Add rectangles and text elements to the key
+	const rectWidth = 15;
+	const rectHeight = 15;
+	const rectSpacing = 10;
+	keyGroup.selectAll("rect")
+	  .data(keyData)
+	  .enter()
+	  .append("rect")
+		.attr("x", 0)
+		.attr("y", (d, i) => i * (rectHeight + rectSpacing))
+		.attr("width", rectWidth)
+		.attr("height", rectHeight)
+		.attr("fill", d => d.color);
+  
+	const textOffset = rectWidth + 5;
+	keyGroup.selectAll("text")
+	  .data(keyData)
+	  .enter()
+	  .append("text")
+		.attr("x", textOffset)
+		.attr("y", (d, i) => i * (rectHeight + rectSpacing) + rectHeight / 2)
+		.attr("dy", "0.35em")
+		.text(d => d.label);
+  }
+  
 
 zoom()
 build_boston_map();
+add_key();
 create_brush()
 
 
