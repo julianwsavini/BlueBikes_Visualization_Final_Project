@@ -99,7 +99,7 @@ function build_boston_map() {
 
 	  d3.csv("/data/start_station_data.csv").then((data) => {
 		// Add circles for each station
-		FRAME1.selectAll("circle")
+		FRAME1.selectAll(".circle")
 		   .data(data)
 		   .enter()
 		   .append("circle")
@@ -129,10 +129,10 @@ function build_boston_map() {
 	  });
 
 	// Create tooltip
-	const TOOLTIP = d3.select("#bostonmap")
-	.append("div")
-	  .attr("class", "tooltip")
-	  .style("opacity", 1); 
+	var TOOLTIP = d3.select(#bostonmap)
+		.append('div')
+	  	.attr("class", "tooltip")
+	  	.style("opacity", 1); 
 
 	// Define event handler functions for tooltips
 	function handleMouseover(event, d) {
@@ -154,7 +154,7 @@ function build_boston_map() {
 	} 
 
 	// Add event listeners
-	FRAME1.selectAll("circle")
+	FRAME1.selectAll(".circle")
  	.on("mouseover", handleMouseover)
  	.on("mousemove", handleMousemove)
  	.on("mouseleave", handleMouseleave);  
