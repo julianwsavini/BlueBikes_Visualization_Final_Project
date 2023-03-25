@@ -31,6 +31,8 @@ const neighborhoods_json = {
 }
 
 //declare contsants
+const tooltip = createTooltip();
+
 const FRAME_HEIGHT = 500;
 let FRAME_WIDTH = document.getElementById('left_col').clientWidth;
 const MARGINS = {
@@ -97,21 +99,34 @@ function build_boston_map() {
 		.attr("stroke-width", "1px")
 		.attr("d", geoPath);
 
-
-
 	d3.csv("/data/start_station_data.csv").then((data) => {
 		// Add circles for each station
 		console.log(data);
 		FRAME1.selectAll(".circle")
-			.data(data)
-			.enter()
-			.append("image")
-			.attr("x", (d) => albersProjection([d.station_longitude, d.station_latitude])[0])
-			.attr("y", (d) => albersProjection([d.station_longitude, d.station_latitude])[1])
-			.attr("width", 10)
-			.attr("height", 10)
-			.attr("xlink:href", "images/bluebike.png");
-	});
+  .data(data)
+  .enter()
+  .append("image")
+  .attr("x", (d) => albersProjection([d.station_longitude, d.station_latitude])[0])
+  .attr("y", (d) => albersProjection([d.station_longitude, d.station_latitude])[1])
+  .attr("width", 10)
+  .attr("height", 10)
+  .attr("xlink:href", "images/bluebike.png")
+  .on("click", (event, d) => {
+    // Show tooltip with the station name on click
+    tooltip.transition()
+      .duration(200)
+      .style("opacity", 1);
+    tooltip.html(d.start_station_name)
+      .style("left", (event.pageX + 10) + "px")
+      .style("top", (event.pageY - 10) + "px");
+  })
+  .on("mouseout", () => {
+    // Hide tooltip when the mouse leaves the station
+    tooltip.transition()
+      .duration(500)
+      .style("opacity", 0);
+  });
+})
 
 	d3.csv("/data/Boston_Accidents.csv").then((data) => {
 		console.log(data);
@@ -286,6 +301,21 @@ function pie_chart() {
 		.style('font-weight', 'bold')
 		.style('fill', 'white');
 }
+
+// Tooltip functionality 
+function createTooltip() {
+  const tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0)
+    .style("position", "absolute")
+    .style("background", "white")
+    .style("border", "1px solid #000")
+    .style("border-radius", "5px")
+    .style("padding", "5px")
+    .style("pointer-events", "none");
+  return tooltip;
+}
+
 
 zoom()
 build_boston_map();
