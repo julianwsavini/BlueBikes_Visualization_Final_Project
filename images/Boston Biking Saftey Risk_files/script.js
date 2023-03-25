@@ -173,29 +173,30 @@ function add_key() {
 
 	const keyGroup = FRAME1.append("g")
     .attr("class", "key")
-    .attr("transform", `translate(10, 10)`)
-    .style("position", "absolute");
+    .attr("transform", `translate(20, 20)`)
+    .style("position", "absolute")
+    .style("z-index", "10");
 
 
 	keyGroup.append("rect")
 		.attr("x", -5)
 		.attr("y", -5)
-		.attr("width", 137)
-		.attr("height", 40)
+		.attr("width", 180)
+		.attr("height", 50)
 		.attr("fill", "white")
 		.attr("stroke", "black")
 		.attr("stroke-width", 1);
 
-	const rectWidth = 10;
-	const rectHeight = 10;
-	const rectSpacing = 5;
+	const rectWidth = 15;
+	const rectHeight = 15;
+	const rectSpacing = 10;
 	keyGroup.selectAll("rect.color")
 		.data(keyData)
 		.enter()
 		.append("rect")
 		.attr("class", "color")
 		.attr("x", 0)
-		.attr("y", (d, i) => i * (rectHeight + rectSpacing) + 5)
+		.attr("y", (d, i) => i * (rectHeight + rectSpacing))
 		.attr("width", rectWidth)
 		.attr("height", rectHeight)
 		.attr("fill", d => d.color);
@@ -207,13 +208,11 @@ function add_key() {
 		.append("text")
 		.attr("class", "label")
 		.attr("x", textOffset)
-		.attr("y", (d, i) => i * (rectHeight + rectSpacing) + rectHeight)
-		.attr("dy", "0.25em")
+		.attr("y", (d, i) => i * (rectHeight + rectSpacing) + rectHeight / 2)
+		.attr("dy", "0.35em")
 		.text(d => d.label)
-		.attr("font-size", "12px")
 		.attr("fill", "black");
 }
-
 // End of legend implementation
 
 function pie_chart() {
@@ -290,5 +289,5 @@ function pie_chart() {
 zoom()
 build_boston_map();
 pie_chart();
-//create_brush();
 add_key();
+create_brush();
