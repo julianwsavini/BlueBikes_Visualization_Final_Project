@@ -163,15 +163,12 @@ function build_boston_map() {
 			value = plot1
 				.style("stroke", "none")
 				.style("opacity", 0.5)
-				.filter(d => {
-					return x0 <= d.x + 50 && d.x + 50 < x1 && y0 <= d.y + 50 && d.y + 50 < y1;
-				})
-				.style("fill", "yellow")
+				.filter(d => {return x0 <= albersProjection([d.long, d.lat])[0] && albersProjection([d.long, d.lat])[0] < x1 && y0 <= albersProjection([d.long, d.lat])[1] && albersProjection([d.long, d.lat])[1] < y1;})
+				.style("stroke", "yellow")
 				.style("opacity", 1)
 				.data();
 		}
 	}
-	
 	});
 }
 
