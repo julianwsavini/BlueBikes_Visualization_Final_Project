@@ -137,7 +137,7 @@ function build_boston_map() {
 	d3.csv("/data/Boston_Accidents.csv").then((data) => {
 		console.log(data);
 		// Add circles for each bike crash
-		FRAME1.selectAll("circle")
+		var plot1 = FRAME1.selectAll("circle")
 			.data(data)
 			.enter()
 			.append("circle")
@@ -145,39 +145,34 @@ function build_boston_map() {
 			.attr("cy", (d) => albersProjection([d.long, d.lat])[1])
 			.attr("r", 1)
 			.attr("fill", "red");
-	});
-}
-
-function create_brush() {
+	
+	
 	FRAME1
 		.call(d3.brush()
 			.extent([
 				[50, 50],
-				[FRAME_WIDTH, FRAME_HEIGHT - 50]
-			])
-			.on("start brush", brushed)
-		)
-
-	function brushed({
-		selection
-	}) {
+					[FRAME_WIDTH + MARGINS.left, FRAME_HEIGHT - MARGINS.bottom]
+				])
+				.on("start brush", brushed)
+			)
+	
+	
+	function brushed({selection}) {
 		if (selection) {
-			const [
-				[x0, y0],
-				[x1, y1]
-			] = selection;
-			d3.select("#bostonmap")
-				.selectAll("circle")
+			const [[x0, y0], [x1, y1]] = selection;
+			value = plot1
 				.style("stroke", "none")
 				.style("opacity", 0.5)
 				.filter(d => {
-					return x0 <= d.x && d.x < x1 && y0 <= d.y && d.y < y1;
+					return x0 <= d.x + 50 && d.x + 50 < x1 && y0 <= d.y + 50 && d.y + 50 < y1;
 				})
-				.style("stroke", "darkorange")
+				.style("fill", "yellow")
 				.style("opacity", 1)
 				.data();
 		}
 	}
+	
+	});
 }
 
 // Start of legend implementation
@@ -324,7 +319,6 @@ function createTooltip() {
 
 
 zoom()
-build_boston_map();
 pie_chart();
-//create_brush();
+build_boston_map();
 add_key();
