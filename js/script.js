@@ -174,7 +174,6 @@ function build_boston_map() {
 						otherCount ++;
 					}
 				}
-
 				let dictionary = [
 					{
 						location: 'Street',
@@ -192,20 +191,14 @@ function build_boston_map() {
 		
 				pie_chart(dictionary);
 			}
-		
 		}
-	
 		FRAME1
 			.call(d3.brush()
 			.extent([
-				[50, 50],
-					[FRAME_WIDTH + MARGINS.left, FRAME_HEIGHT - MARGINS.bottom]
+				[0, 0],
+					[FRAME_WIDTH + MARGINS.left, FRAME_HEIGHT + MARGINS.bottom]
 				])
 				.on("start brush", brushed))
-	
-	
-
-	
 	});
 }
 	
@@ -215,7 +208,7 @@ function add_key() {
 	const keyData = [
 	{
 		label: "Bluebike Stations",
-		color: "#00ffff"
+		color: "#4699f5"
 	},
 	{
 		label: "Bike Crash Locations",
@@ -267,14 +260,13 @@ function add_key() {
 
 // End of legend implementation
 
-
 function pie_chart(data) {
 	var svg = d3.select("#accident_piechart");
 	svg.selectAll("*").remove();
 	const FRAME2 = d3.select("#accident_piechart")
 		.append("svg")
-		.attr("height", 450)
-		.attr("width", 450)
+		.attr("height", 10)
+		.attr("width", 10)
 	// Set up placeholder data
 	let container = document.getElementById('right_col');
 	let width = container.clientWidth * 1;
@@ -327,6 +319,65 @@ function pie_chart(data) {
 		.style('fill', 'white');
 }
 
+function bar_chart() {
+
+	// Create the dimensions of the Frame
+	const width = 300;
+	const height = 300;
+	const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+
+
+	const FRAME2 = d3.select("#station_barchart")
+		.append("svg")
+		.attr("height", height + margin.bottom)
+		.attr("width", width)
+	// Set up placeholder data
+	var data = [
+	{
+		catagory: 'bikes leaving',
+		count: 10
+	},
+	{
+		catagory: 'bikes entering',
+		count: 5
+	}];
+
+	// make scales
+	const xScale = d3.scaleBand()
+		.domain(data.map(d => d.catagory))
+		.range([margin.left, width - margin.right])
+		.padding(0.1);
+
+	const yScale = d3.scaleLinear()
+		.domain([0, d3.max(data, d => d.count)])
+		.range([height - margin.bottom, margin.top]);
+
+	// produce bars on graph 
+	FRAME2.selectAll('rect')
+		.data(data)
+		.enter()
+		.append("rect")
+		.attr("x", d => xScale(d.catagory))
+		.attr("y", d => yScale(d.count))
+		.attr("width", xScale.bandwidth())
+		.attr("height", d => height - margin.bottom - yScale(d.count))
+		.attr("class", "rect")
+		.attr("id", d => d.catagory)
+		.style("opacity", 0.5)
+		.style("fill", "#4699f5");
+
+		const xAxis = d3.axisBottom(xScale);
+		const yAxis = d3.axisLeft(yScale);
+	
+	FRAME2.append("g")
+		.attr("transform", "translate(0," + (height - margin.bottom) + ")")
+		.call(xAxis);
+	
+	FRAME2.append("g")
+		.attr("transform", "translate(50,0)")
+		.call(yAxis);
+}
+
 // Tooltip functionality 
 function createTooltip() {
 	const tooltip = d3.select("body").append("div")
@@ -344,4 +395,5 @@ function createTooltip() {
 
 zoom()
 build_boston_map();
+bar_chart();
 add_key();
