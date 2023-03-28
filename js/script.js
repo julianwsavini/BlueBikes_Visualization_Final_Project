@@ -51,14 +51,16 @@ const VIS_WIDTH = FRAME_WIDTH - MARGINS.left - MARGINS.right;
 const FRAME1 = d3.select("#bostonmap")
 	.append("svg")
 	.attr("height", FRAME_HEIGHT)
-	.attr("width", FRAME_WIDTH)
+	.attr("width", FRAME_WIDTH);
 
-	FRAME1.append("rect")
+FRAME1.append("rect")
 	.attr("width", "100%")
 	.attr("height", "100%")
 	.attr("fill", "rgba(0, 0, 0, 0.1)")
 	.attr("stroke", "black")
 	.attr("stroke-width", "4");
+
+
 
 // Zoom Functionality Start 
 
@@ -137,40 +139,76 @@ function build_boston_map() {
 	d3.csv("/data/Boston_Accidents.csv").then((data) => {
 		console.log(data);
 		// Add circles for each bike crash
-		var plot1 = FRAME1.selectAll("circle")
+		const plot1 = FRAME1.selectAll("circle")
 			.data(data)
 			.enter()
 			.append("circle")
+			.attr("id", "bostonplot")
 			.attr("cx", (d) => albersProjection([d.long, d.lat])[0])
 			.attr("cy", (d) => albersProjection([d.long, d.lat])[1])
 			.attr("r", 1)
 			.attr("fill", "red");
 	
+		function brushed({selection}) {
+			if (selection) {
+				const [[x0, y0], [x1, y1]] = selection;
+				value = plot1
+					.style("stroke", "none")
+					.style("opacity", 0.5)
+					.filter(d => {return x0 <= albersProjection([d.long, d.lat])[0] && albersProjection([d.long, d.lat])[0] < x1 && y0 <= albersProjection([d.long, d.lat])[1] && albersProjection([d.long, d.lat])[1] < y1;})
+					.style("stroke", "yellow")
+					.style("opacity", 1)
+					.data()
+				let intersectionCount = 0;
+				let streetCount = 0;
+				let otherCount = 0;
+				for (let i = 0; i < value.length; i++) {
+					let loc = value[i]['location_type'];
+					if (loc == "Intersection") {
+						intersectionCount ++;
+					}
+					if (loc == "Street") {
+						streetCount ++;
+					}
+					if (loc == "Other") {
+						otherCount ++;
+					}
+				}
+
+				let dictionary = [
+					{
+						location: 'Street',
+						count: streetCount
+					},
+					{
+						location: 'Intersection',
+						count: intersectionCount
+					},
+					{
+						location: 'Other',
+						count: otherCount
+					}];
+				console.log(dictionary)
+		
+				pie_chart(dictionary);
+			}
+		
+		}
 	
-	FRAME1
-		.call(d3.brush()
+		FRAME1
+			.call(d3.brush()
 			.extent([
 				[50, 50],
 					[FRAME_WIDTH + MARGINS.left, FRAME_HEIGHT - MARGINS.bottom]
 				])
-				.on("start brush", brushed)
-			)
+				.on("start brush", brushed))
 	
 	
-	function brushed({selection}) {
-		if (selection) {
-			const [[x0, y0], [x1, y1]] = selection;
-			value = plot1
-				.style("stroke", "none")
-				.style("opacity", 0.5)
-				.filter(d => {return x0 <= albersProjection([d.long, d.lat])[0] && albersProjection([d.long, d.lat])[0] < x1 && y0 <= albersProjection([d.long, d.lat])[1] && albersProjection([d.long, d.lat])[1] < y1;})
-				.style("stroke", "yellow")
-				.style("opacity", 1)
-				.data();
-		}
-	}
+
+	
 	});
 }
+	
 
 // Start of legend implementation
 function add_key() {
@@ -229,26 +267,15 @@ function add_key() {
 
 // End of legend implementation
 
-function pie_chart() {
+
+function pie_chart(data) {
+	var svg = d3.select("#accident_piechart");
+	svg.selectAll("*").remove();
 	const FRAME2 = d3.select("#accident_piechart")
 		.append("svg")
 		.attr("height", 450)
 		.attr("width", 450)
 	// Set up placeholder data
-	var data = [
-	{
-		location: 'Street',
-		count: 10
-	},
-	{
-		location: 'Intersection',
-		count: 5
-	},
-	{
-		location: 'Other',
-		count: 5
-	}];
-
 	let container = document.getElementById('right_col');
 	let width = container.clientWidth * 1;
 	let height = container.clientHeight * 1;
@@ -316,6 +343,5 @@ function createTooltip() {
 
 
 zoom()
-pie_chart();
 build_boston_map();
 add_key();
