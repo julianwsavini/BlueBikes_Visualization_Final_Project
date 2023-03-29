@@ -182,13 +182,14 @@ function build_boston_map() {
 		const plot1 = FRAME1.selectAll("circle")
 			.data(data)
 			.enter()
-			.append("circle")
+			.append("image")
 			.attr("id", "bostonplot")
-			.attr("cx", (d) => albersProjection([d.long, d.lat])[0])
-			.attr("cy", (d) => albersProjection([d.long, d.lat])[1])
-			.attr("r", 10)
-			.attr("opacity", 0.05)
-			.attr("fill", "red");
+			.attr("x", (d) => albersProjection([d.long, d.lat])[0])
+			.attr("y", (d) => albersProjection([d.long, d.lat])[1])
+			.attr("width", 20)
+			.attr("height", 20)
+			.attr("opacity", .1)
+			.attr("xlink:href", "images/red_circle.png");
 
 		function brushed({
 			selection
@@ -199,12 +200,10 @@ function build_boston_map() {
 					[x1, y1]
 				] = selection;
 				value = plot1
-					.style("opacity", 0.03)
+					.style("opacity", 0.05)
 					.filter(d => {
 						return x0 <= albersProjection([d.long, d.lat])[0] && albersProjection([d.long, d.lat])[0] < x1 && y0 <= albersProjection([d.long, d.lat])[1] && albersProjection([d.long, d.lat])[1] < y1;
 					})
-					.style("stroke", "white")
-					.style("opacity", .08)
 					.data()
 				let intersectionCount = 0;
 				let streetCount = 0;
