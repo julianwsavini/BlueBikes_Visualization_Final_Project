@@ -32,7 +32,7 @@ const neighborhoods_json = {
 
 //declare contsants
 //const tooltip = createTooltip();
-const FRAME_HEIGHT = 500;
+const FRAME_HEIGHT = 600;
 let FRAME_WIDTH = document.getElementById('left_col').clientWidth;
 const MARGINS = {
 	left: 50,
@@ -186,7 +186,8 @@ function build_boston_map() {
 			.attr("id", "bostonplot")
 			.attr("cx", (d) => albersProjection([d.long, d.lat])[0])
 			.attr("cy", (d) => albersProjection([d.long, d.lat])[1])
-			.attr("r", 1)
+			.attr("r", 10)
+			.attr("opacity", 0.05)
 			.attr("fill", "red");
 
 		function brushed({
@@ -198,13 +199,12 @@ function build_boston_map() {
 					[x1, y1]
 				] = selection;
 				value = plot1
-					.style("stroke", "none")
-					.style("opacity", 0.5)
+					.style("opacity", 0.03)
 					.filter(d => {
 						return x0 <= albersProjection([d.long, d.lat])[0] && albersProjection([d.long, d.lat])[0] < x1 && y0 <= albersProjection([d.long, d.lat])[1] && albersProjection([d.long, d.lat])[1] < y1;
 					})
-					.style("stroke", "yellow")
-					.style("opacity", 1)
+					.style("stroke", "white")
+					.style("opacity", .08)
 					.data()
 				let intersectionCount = 0;
 				let streetCount = 0;
