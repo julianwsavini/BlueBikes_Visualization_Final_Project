@@ -107,72 +107,72 @@ function build_boston_map() {
 		.attr("stroke-width", "1px")
 		.attr("d", geoPath);
 
-	d3.csv("/data/start_station_data.csv").then((data) => {
+	d3.csv("/data/merged_station_data.csv").then((data) => {
 		// Add circles for each station
 		console.log(data);
 		FRAME1.selectAll(".circle")
 			.data(data)
 			.enter()
 			.append("image")
-			.attr("x", (d) => albersProjection([d.station_longitude, d.station_latitude])[0])
-			.attr("y", (d) => albersProjection([d.station_longitude, d.station_latitude])[1])
+			.attr("x", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[0])
+			.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1])
 			.attr("width", 7)
 			.attr("height", 7)
 			.attr("xlink:href", "images/bluebike.png")
-			.on("click", (event, d) => {
-				// Show tooltip with the station name on click
+			.on("mouseover", (event, d) => {
+			// Show tooltip with the station name on click
 				tooltip.transition()
 					.duration(200)
 					.style("opacity", 1);
-				tooltip.html(d.start_station_name)
-					.style("left", (event.pageX + 10) + "px")
-					.style("top", (event.pageY - 10) + "px");
+			 	tooltip.html(d.station_name)
+			 		.style("left", (event.pageX + 10) + "px")
+			 		.style("top", (event.pageY - 10) + "px");
 
-				//tooltip a chart
-				//www.d3-graph-gallery.com/graph/line_basic.html
-				const margin = { top: 10, right: 30, bottom: 30, left: 60 },
-					width = 250 - margin.left - margin.right,
-					height = 200 - margin.top - margin.bottom;
+			// 	//tooltip a chart
+			// 	//www.d3-graph-gallery.com/graph/line_basic.html
+			// 	const margin = { top: 10, right: 30, bottom: 30, left: 60 },
+			// 		width = 250 - margin.left - margin.right,
+			// 		height = 200 - margin.top - margin.bottom;
 
-				const ChartContainer = d3.select("#body")
-					.append("div")
-					.attr("class", "chart-Container");
+			// 	const ChartContainer = d3.select("#body")
+			// 		.append("div")
+			// 		.attr("class", "chart-Container");
 
-				const svg = ChartContainer
-					.append("svg")
-					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom);
+			// 	const svg = ChartContainer
+			// 		.append("svg")
+			// 		.attr("width", width + margin.left + margin.right)
+			// 		.attr("height", height + margin.top + margin.bottom);
 				
-				const xScale = ;
-				const yScale = ;
+			// 	const xScale = ;
+			// 	const yScale = ;
 
-				const xAxis = d3.xAxisbottom(xScale);
-				const yAxis = d3.yAxisbottom(yScale);
+			// 	const xAxis = d3.xAxisbottom(xScale);
+			// 	const yAxis = d3.yAxisbottom(yScale);
 
 
-				svg.append("g")
-					.attr("class", "x-axis")
-					.attr("transform", `translate(0, ${height})`)
-					.call(xAxis);
-				svg.append("g")
-					.attr("class", "y-axis")
-					.call(yAxis);
+			// 	svg.append("g")
+			// 		.attr("class", "x-axis")
+			// 		.attr("transform", `translate(0, ${height})`)
+			// 		.call(xAxis);
+			// 	svg.append("g")
+			// 		.attr("class", "y-axis")
+			// 		.call(yAxis);
 				
-				const line = d3.bar()
-					.x((d) => xScale(d.bikes_arriving))
-					.y((d) => yScale(d.bikes_leaving));
+			// 	const line = d3.bar()
+			// 		.x((d) => xScale(d.bikes_arriving))
+			// 		.y((d) => yScale(d.bikes_leaving));
 				
-				svg.append("path")
-					.datum(data)
-					.attr("class", "line")
-					.attr("d", line);
+			// 	svg.append("path")
+			// 		.datum(data)
+			// 		.attr("class", "line")
+			// 		.attr("d", line);
 
-			})
-			.on("mouseout", () => {
-				// Hide tooltip when the mouse leaves the station
-				tooltip.transition()
-					.duration(500)
-					.style("opacity", 0);
+			// })
+			// .on("mouseout", () => {
+			// 	// Hide tooltip when the mouse leaves the station
+			// 	tooltip.transition()
+			// 		.duration(500)
+			// 		.style("opacity", 0);
 			});
 	})
 

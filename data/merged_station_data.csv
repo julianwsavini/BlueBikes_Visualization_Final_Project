@@ -1,4 +1,4 @@
-,station name,Average exit trip duration,station latitude_x,station longitude_x,bikes leaving,bikes entering,Average enter trip duration
+,station_name,Average exit trip duration,station_latitude_x,station_longitude_x,bikes_leaving,bikes_entering,Average enter trip duration
 0,1200 Beacon St,872.611465,42.34414899,-71.11467361,314,305,1886.029508
 1,160 Arsenal,2739.263158,42.36466403,-71.17569387,38,35,3522.742857
 2,175 N Harvard St,980.1986532,42.363796,-71.129164,594,634,1775.544164
