@@ -349,6 +349,10 @@ function pie_chart(data) {
 			return color(d.data.location);
 		});
 
+	if (data[2]["count"] == 0) {
+		data.pop()
+	}
+	
 	// add labels
 	let labels = g.selectAll('text')
 		.data(pie(data))
