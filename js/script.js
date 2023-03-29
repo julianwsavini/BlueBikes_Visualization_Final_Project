@@ -107,7 +107,7 @@ function build_boston_map() {
 		.attr("stroke-width", "1px")
 		.attr("d", geoPath);
 
-	d3.csv("/data/merged_station_data.csv").then((data) => {
+	d3.csv("data/merged_station_data.csv").then((data) => {
 		// Add circles for each station
 		console.log(data);
 		FRAME1.selectAll(".circle")
@@ -176,7 +176,7 @@ function build_boston_map() {
 			});
 	})
 
-	d3.csv("/data/Boston_Accidents.csv").then((data) => {
+	d3.csv("data/Boston_Accidents.csv").then((data) => {
 		console.log(data);
 		// Add circles for each bike crash
 		const plot1 = FRAME1.selectAll("circle")
@@ -349,10 +349,17 @@ function pie_chart(data) {
 			return color(d.data.location);
 		});
 
-	if (data[2]["count"] == 0) {
-		data.pop()
-	}
-	
+	// for (let i = 0; i < value.length; i++) {
+	// if (data[2]["count"] == 0) {
+	// 	data.pop();
+	// };
+	// if (data[1]["count"] == 0) {
+	// 	data.splice(index, 1);
+	// };
+	// if (data[0]["count"] == 0) {
+	// 	data.splice(index, 0);
+	// };
+	// }
 	// add labels
 	let labels = g.selectAll('text')
 		.data(pie(data))
