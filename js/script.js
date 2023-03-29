@@ -127,6 +127,46 @@ function build_boston_map() {
 				tooltip.html(d.start_station_name)
 					.style("left", (event.pageX + 10) + "px")
 					.style("top", (event.pageY - 10) + "px");
+
+				//tooltip a chart
+				//www.d3-graph-gallery.com/graph/line_basic.html
+				const margin = { top: 10, right: 30, bottom: 30, left: 60 },
+					width = 250 - margin.left - margin.right,
+					height = 200 - margin.top - margin.bottom;
+
+				const ChartContainer = d3.select("#body")
+					.append("div")
+					.attr("class", "chart-Container");
+
+				const svg = ChartContainer
+					.append("svg")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom);
+				
+				const xScale = ;
+				const yScale = ;
+
+				const xAxis = d3.xAxisbottom(xScale);
+				const yAxis = d3.yAxisbottom(yScale);
+
+
+				svg.append("g")
+					.attr("class", "x-axis")
+					.attr("transform", `translate(0, ${height})`)
+					.call(xAxis);
+				svg.append("g")
+					.attr("class", "y-axis")
+					.call(yAxis);
+				
+				const line = d3.bar()
+					.x((d) => xScale(d.bikes_arriving))
+					.y((d) => yScale(d.bikes_leaving));
+				
+				svg.append("path")
+					.datum(data)
+					.attr("class", "line")
+					.attr("d", line);
+
 			})
 			.on("mouseout", () => {
 				// Hide tooltip when the mouse leaves the station
