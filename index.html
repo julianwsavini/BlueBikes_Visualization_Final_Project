@@ -27,6 +27,18 @@
             </p>
         </div>
 
+        <!--    -->
+        <p> Toggle Zoom and Brushing/Linking functionality:</p>
+        <label for = "functionality" class="toggle_switch">
+            <input id = "toggle" type="checkbox" value = "yes"> test 
+        </label>
+
+        <script>
+            const toggle_switch = document.querySelector('#functionality');
+            console.log(toggle_switch.checked); // false
+        </script>
+
+
         <div class = "columns-div">
             <div id = "left_col" class = "column">
                 <h2>Visualization</h2>
