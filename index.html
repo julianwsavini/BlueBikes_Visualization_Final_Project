@@ -27,31 +27,36 @@
             </p>
         </div>
 
-        <!--    -->
-        <p> Toggle Zoom and Brushing/Linking functionality:</p>
-        <label for = "functionality" class="toggle_switch">
-            <input id = "toggle" type="checkbox" value = "yes"> test 
-        </label>
+        <div class = "columns-div">
+            <div id = "left_col_1" class = "column">
+                <h1>Boston Map</h1>
 
+                <!-- toggle switch, from: https://www.w3schools.com/howto/howto_css_switch.asp --> 
+                <label class="switch">
+                <input type="checkbox" id = "toggle_zoom"> Zoom 
+                <span class="slider round"> &#8205;</span>  Brushing/Linking
+                </label>
+                <!-- end toggle switch --> 
 
+                <p style = "font-size: 9px;">&#8205;</p>
+            </div>
+            <div id = "right_col_1" class = "column">
+                <h2 id = "chart_desc">Hover over station to display data</h2>
+            </div>
+        </div>
 
         <div class = "columns-div">
             <div id = "left_col" class = "column">
-                <h2>Visualization</h2>
                 <div>
                     <div id="bostonmap" class="column"></div>
                 </div>
             </div>
             <div id = "right_col" class = "column">
-                <h2>Highlighted Station Data</h2>
                 <div id="station_barchart"></div>
-                <h2>Location of Highlighted Accidents</h2>
                 <div id="accident_piechart"></div>
             </div>
         </div>
-
-        <button class="button" onClick="window.location.reload();">Reset Zoom</button>
-
+        
         <div id="footer">
             <h2>Acknowledgements</h2>
             <ul id="Acknowledgements">
@@ -62,7 +67,7 @@
                 <li><a href="https://stackoverflow.com/questions/47917730/d3-line-and-points-on-map-from-csv-data">https://stackoverflow.com/questions/47917730/d3-line-and-points-on-map-from-csv-data</a></li>
                 <li><a href="https://maptimeboston.github.io/d3-maptime/#/">https://maptimeboston.github.io/d3-maptime/#/</a></li>
                 <li><a href="https://data.boston.gov/dataset/vision-zero-crash-records">https://data.boston.gov/dataset/vision-zero-crash-records</a></li>
-                <li><a href=""></a></li>
+                <li><a href="https://www.w3schools.com/howto/howto_css_switch.asp">https://www.w3schools.com/howto/howto_css_switch.asp</a></li>
             </ul>
         </div>
         <script src= "js/script.js"></script>

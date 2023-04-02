@@ -31,7 +31,7 @@ const neighborhoods_json = {
 }
 
 //declare contsants
-//const tooltip = createTooltip();
+const tooltip = createTooltip();
 const FRAME_HEIGHT = 600;
 let FRAME_WIDTH = document.getElementById('left_col').clientWidth;
 const MARGINS = {
@@ -40,64 +40,44 @@ const MARGINS = {
 	top: 50,
 	bottom: 50
 }
-
-
 // with a scale function
-
 const VIS_HEIGHT = FRAME_HEIGHT - MARGINS.top - MARGINS.bottom;
 const VIS_WIDTH = FRAME_WIDTH - MARGINS.left - MARGINS.right;
 
+function build_boston_map(toggle_state) {
+	// Creating frame inside function to enable toggle functionality 
+	const FRAME1 = d3.select("#bostonmap")
+		.append("svg")
+		.attr("height", FRAME_HEIGHT)
+		.attr("width", FRAME_WIDTH);
+	FRAME1.append("rect")
+		.attr("width", "100%")
+		.attr("height", "100%")
+		.attr("fill", "rgba(0, 0, 0, 0.1)")
+		.attr("stroke", "black")
+		.attr("stroke-width", "4");
+	if (toggle_state == 1) {
+		let zoom = d3.zoom()
+			.on("zoom", handleZoom)
+			.filter((event) => {
+				return !event.button && (event.type === 'wheel' || event.type === 'touchmove');
+			});
 
-const FRAME1 = d3.select("#bostonmap")
-	.append("svg")
-	.attr("height", FRAME_HEIGHT)
-	.attr("width", FRAME_WIDTH);
-
-FRAME1.append("rect")
-	.attr("width", "100%")
-	.attr("height", "100%")
-	.attr("fill", "rgba(0, 0, 0, 0.1)")
-	.attr("stroke", "black")
-	.attr("stroke-width", "4");
-
-
-
-// Zoom Functionality Start 
-
-// https://www.d3indepth.com/zoom-and-pan/
-// https://github.com/d3/d3-zoom
-// https://stackoverflow.com/questions/23822220/d3-zoom-disable-mouse-drag
-function zoom() {
-	let zoom = d3.zoom()
-		.on("zoom", handleZoom)
-		.filter((event) => {
-			return !event.button && (event.type === 'wheel' || event.type === 'touchmove');
-		});
-
-	function handleZoom(e) {
-		FRAME1.selectAll("image, g, circle")
-			.attr("transform", e.transform);
+		function handleZoom(e) {
+			FRAME1.selectAll("image, g, circle")
+				.attr("transform", e.transform);
+		}
+		d3.select("#bostonmap")
+			.call(zoom);
 	}
-
-	d3.select("#bostonmap")
-		.call(zoom);
-}
-
-// Zoom Functionality End 
-
-function build_boston_map() {
-
 	const g = FRAME1.append("g");
-
 	const albersProjection = d3.geoAlbers()
 		.scale(190000)
 		.rotate([71.057, 0])
 		.center([0, 42.313])
 		.translate([FRAME_WIDTH / 2, FRAME_HEIGHT / 2]);
-
 	const geoPath = d3.geoPath()
 		.projection(albersProjection);
-
 	g.selectAll("path")
 		.data(neighborhoods_json.features)
 		.enter()
@@ -106,78 +86,7 @@ function build_boston_map() {
 		.attr("stroke", "#282F36")
 		.attr("stroke-width", "1px")
 		.attr("d", geoPath);
-
-	d3.csv("data/merged_station_data.csv").then((data) => {
-		// Add circles for each station
-		console.log(data);
-		FRAME1.selectAll(".circle")
-			.data(data)
-			.enter()
-			.append("image")
-			.attr("x", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[0])
-			.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1])
-			.attr("width", 7)
-			.attr("height", 7)
-			.attr("xlink:href", "images/bluebike.png")
-			.on("mouseover", (event, d) => {
-				// Show tooltip with the station name on click
-				tooltip.transition()
-					.duration(200)
-					.style("opacity", 1);
-				tooltip.html(d.station_name)
-					.style("left", (event.pageX + 10) + "px")
-					.style("top", (event.pageY - 10) + "px");
-
-				// 	//tooltip a chart
-				// 	//www.d3-graph-gallery.com/graph/line_basic.html
-				// 	const margin = { top: 10, right: 30, bottom: 30, left: 60 },
-				// 		width = 250 - margin.left - margin.right,
-				// 		height = 200 - margin.top - margin.bottom;
-
-				// 	const ChartContainer = d3.select("#body")
-				// 		.append("div")
-				// 		.attr("class", "chart-Container");
-
-				// 	const svg = ChartContainer
-				// 		.append("svg")
-				// 		.attr("width", width + margin.left + margin.right)
-				// 		.attr("height", height + margin.top + margin.bottom);
-
-				// 	const xScale = ;
-				// 	const yScale = ;
-
-				// 	const xAxis = d3.xAxisbottom(xScale);
-				// 	const yAxis = d3.yAxisbottom(yScale);
-
-
-				// 	svg.append("g")
-				// 		.attr("class", "x-axis")
-				// 		.attr("transform", `translate(0, ${height})`)
-				// 		.call(xAxis);
-				// 	svg.append("g")
-				// 		.attr("class", "y-axis")
-				// 		.call(yAxis);
-
-				// 	const line = d3.bar()
-				// 		.x((d) => xScale(d.bikes_arriving))
-				// 		.y((d) => yScale(d.bikes_leaving));
-
-				// 	svg.append("path")
-				// 		.datum(data)
-				// 		.attr("class", "line")
-				// 		.attr("d", line);
-
-				// })
-				// .on("mouseout", () => {
-				// 	// Hide tooltip when the mouse leaves the station
-				// 	tooltip.transition()
-				// 		.duration(500)
-				// 		.style("opacity", 0);
-			});
-	})
-
 	d3.csv("data/Boston_Accidents.csv").then((data) => {
-		console.log(data);
 		// Add circles for each bike crash
 		const plot1 = FRAME1.selectAll("circle")
 			.data(data)
@@ -190,67 +99,118 @@ function build_boston_map() {
 			.attr("height", 20)
 			.attr("opacity", .1)
 			.attr("xlink:href", "images/red_circle.png");
-
-		function brushed({
-			selection
-		}) {
-			if (selection) {
-				const [
-					[x0, y0],
-					[x1, y1]
-				] = selection;
-				value = plot1
-					.style("opacity", 0.05)
-					.filter(d => {
-						return x0 <= albersProjection([d.long, d.lat])[0] && albersProjection([d.long, d.lat])[0] < x1 && y0 <= albersProjection([d.long, d.lat])[1] && albersProjection([d.long, d.lat])[1] < y1;
-					})
-					.data()
-				let intersectionCount = 0;
-				let streetCount = 0;
-				let otherCount = 0;
-				for (let i = 0; i < value.length; i++) {
-					let loc = value[i]['location_type'];
-					if (loc == "Intersection") {
-						intersectionCount++;
+		if (toggle_state == 0) {
+			function brushed({
+				selection
+			}) {
+				if (selection) {
+					const [
+						[x0, y0],
+						[x1, y1]
+					] = selection;
+					value = plot1
+						.style("opacity", 0.1)
+						.filter(d => {
+							return x0 <= albersProjection([d.long, d.lat])[0] && albersProjection([d.long, d.lat])[0] < x1 && y0 <= albersProjection([d.long, d.lat])[1] && albersProjection([d.long, d.lat])[1] < y1;
+						})
+						.data()
+					let intersectionCount = 0;
+					let streetCount = 0;
+					let otherCount = 0;
+					for (let i = 0; i < value.length; i++) {
+						let loc = value[i]['location_type'];
+						if (loc == "Intersection") {
+							intersectionCount++;
+						}
+						if (loc == "Street") {
+							streetCount++;
+						}
+						if (loc == "Other") {
+							otherCount++;
+						}
 					}
-					if (loc == "Street") {
-						streetCount++;
-					}
-					if (loc == "Other") {
-						otherCount++;
-					}
+					let dictionary = [{
+							location: 'Street',
+							count: streetCount
+						},
+						{
+							location: 'Intersection',
+							count: intersectionCount
+						},
+						{
+							location: 'Other',
+							count: otherCount
+						}
+					];
+					pie_chart(dictionary);
 				}
-				let dictionary = [{
-						location: 'Street',
-						count: streetCount
-					},
-					{
-						location: 'Intersection',
-						count: intersectionCount
-					},
-					{
-						location: 'Other',
-						count: otherCount
-					}
-				];
-				console.log(dictionary)
-
-				pie_chart(dictionary);
 			}
+			FRAME1
+				.call(d3.brush()
+					.extent([
+						[0, 0],
+						[FRAME_WIDTH + MARGINS.left, FRAME_HEIGHT + MARGINS.bottom]
+					])
+					.on("start brush", brushed))
 		}
-		FRAME1
-			.call(d3.brush()
-				.extent([
-					[0, 0],
-					[FRAME_WIDTH + MARGINS.left, FRAME_HEIGHT + MARGINS.bottom]
-				])
-				.on("start brush", brushed))
+		else {
+			// this is where
+		}
 	});
-}
+	if (toggle_state == 0) {
+		d3.csv("data/merged_station_data.csv").then((data) => {
+			// Add circles for each station
+			FRAME1.selectAll(".circle")
+				.data(data)
+				.enter()
+				.append("image")
+				.attr("x", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[0])
+				.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1])
+				.attr("width", 7)
+				.attr("height", 7)
+				.attr("xlink:href", "images/bluebike.png")
+		});
+	}
+	else {
+		d3.csv("data/merged_station_data.csv").then((data) => {
+			// Add circles for each station
+			FRAME1.selectAll(".circle")
+				.data(data)
+				.enter()
+				.append("image")
+				.attr("x", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[0])
+				.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1])
+				.attr("width", 7)
+				.attr("height", 7)
+				.attr("xlink:href", "images/bluebike.png")
+				.on("mouseover", (event, d) => {
+					
+					d3.select(event.target)
+                		.attr("width", 10)
+                		.attr("height", 10);
 
 
-// Start of legend implementation
-function add_key() {
+					bar_chart(d.station_name, d.bikes_leaving, d.bikes_entering)
+					// Show tooltip with the station name on click
+					tooltip.transition()
+						.duration(200)
+						.style("opacity", 1);
+					tooltip.html(d.station_name)
+						.style("left", (event.pageX + 10) + "px")
+						.style("top", (event.pageY - 10) + "px");
+				})
+				.on("mouseout", (event, d) => {
+					d3.select(event.target)
+                		.attr("width", 7)
+                		.attr("height", 7);
+
+					tooltip.transition()
+						.duration(200)
+						.style("opacity", 0);
+				})
+		});
+	}
+	// Start of legend implementation
 	const keyData = [{
 			label: "Bluebike Stations",
 			color: "#4699f5"
@@ -260,13 +220,10 @@ function add_key() {
 			color: "red"
 		}
 	];
-
 	const keyGroup = FRAME1.append("g")
 		.attr("class", "key")
 		.attr("transform", `translate(10, 10)`)
 		.style("position", "absolute");
-
-
 	keyGroup.append("rect")
 		.attr("x", -5)
 		.attr("y", -5)
@@ -275,7 +232,6 @@ function add_key() {
 		.attr("fill", "white")
 		.attr("stroke", "black")
 		.attr("stroke-width", 1);
-
 	const rectWidth = 10;
 	const rectHeight = 10;
 	const rectSpacing = 5;
@@ -289,7 +245,6 @@ function add_key() {
 		.attr("width", rectWidth)
 		.attr("height", rectHeight)
 		.attr("fill", d => d.color);
-
 	const textOffset = rectWidth + 5;
 	keyGroup.selectAll("text.label")
 		.data(keyData)
@@ -304,41 +259,36 @@ function add_key() {
 		.attr("fill", "black");
 }
 
-// End of legend implementation
-
 function pie_chart(data) {
+	// getting right_col width to make porportional pie chart
+	let right_width = document.getElementById('right_col').clientWidth;
+
 	let svg = d3.select("#accident_piechart");
 	svg.selectAll("*").remove();
 	const FRAME2 = d3.select("#accident_piechart")
 		.append("svg")
-		.attr("height", 10)
-		.attr("width", 10)
+		.attr("height", right_width)
+		.attr("width", right_width)
 	// Set up placeholder data
 	let container = document.getElementById('right_col');
-	let width = container.clientWidth * 1;
-	let height = container.clientHeight * 1;
-
+	let width = container.clientWidth * 1 - 30;
+	let height = container.clientHeight * 1 - 30;
 	let pie = d3.pie()
 		.value(function(d) {
 			return d.count;
 		});
-
 	let arc = d3.arc()
 		.innerRadius(0)
 		.outerRadius(Math.min(width, height) / 2 - 1);
-
 	let color = d3.scaleOrdinal()
 		.domain(data.map(function(d) {
 			return d.location;
 		}))
-		.range(['#4daf4a', '#377eb8', '#ff7f00']);
-
+		.range(['#0077b6', '#00b4d8', '#90e0ef']);
 	let g = FRAME2.append('g')
 		.attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
-
 	FRAME2.attr('width', width)
 		.attr('height', height);
-
 	let slices = g.selectAll('path')
 		.data(pie(data))
 		.enter()
@@ -347,19 +297,15 @@ function pie_chart(data) {
 		.attr('fill', function(d) {
 			return color(d.data.location);
 		});
-
-	// for (let i = 0; i < value.length; i++) {
-	// if (data[2]["count"] == 0) {
-	// 	data.pop();
-	// };
-	// if (data[1]["count"] == 0) {
-	// 	data.splice(index, 1);
-	// };
-	// if (data[0]["count"] == 0) {
-	// 	data.splice(index, 0);
-	// };
-	// }
-	// add labels
+	if (data[2]["count"] == 0) {
+		data.pop()
+	}
+	if (data[1]["count"] == 0) {
+		data.pop()
+	}
+	if (data[0]["count"] == 0) {
+		data.pop()
+	}
 	let labels = g.selectAll('text')
 		.data(pie(data))
 		.enter()
@@ -376,19 +322,38 @@ function pie_chart(data) {
 		.style('fill', 'white');
 }
 
-function bar_chart() {
+function bar_chart(name, arriving, leaving) {
+	const header = document.querySelector("#chart_desc");
+	if (name === undefined) {
+  		// do something
+  		header.textContent = "Hover over station to display data"
+  		console.log("it worked");
+	} else {
+		header.textContent = name + ": Daily Inflow/Outflow";	
+	}
+
+	// resetting bar chart
+	let svg = d3.select("#station_barchart");
+	svg.selectAll("*").remove();
+
+	if (isNaN(leaving)) {
+		leaving = 0;
+	}
+
+	if (isNaN(arriving)) {
+		arriving = 0;
+	}
 
 	// Create the dimensions of the Frame
-	const width = 300;
-	const height = 300;
+	let width = document.getElementById('right_col').clientWidth;
+
+	const height = 575;
 	const margin = {
-		top: 20,
+		top: 50,
 		right: 20,
-		bottom: 30,
+		bottom: 25,
 		left: 40
 	};
-
-
 	const FRAME2 = d3.select("#station_barchart")
 		.append("svg")
 		.attr("height", height + margin.bottom)
@@ -396,24 +361,21 @@ function bar_chart() {
 	// Set up placeholder data
 	let data = [{
 			catagory: 'bikes leaving',
-			count: 10
+			count: arriving
 		},
 		{
 			catagory: 'bikes entering',
-			count: 5
+			count: leaving
 		}
 	];
-
 	// make scales
 	const xScale = d3.scaleBand()
 		.domain(data.map(d => d.catagory))
 		.range([margin.left, width - margin.right])
 		.padding(0.1);
-
 	const yScale = d3.scaleLinear()
 		.domain([0, d3.max(data, d => d.count)])
 		.range([height - margin.bottom, margin.top]);
-
 	// produce bars on graph 
 	FRAME2.selectAll('rect')
 		.data(data)
@@ -427,19 +389,15 @@ function bar_chart() {
 		.attr("id", d => d.catagory)
 		.style("opacity", 0.5)
 		.style("fill", "#4699f5");
-
 	const xAxis = d3.axisBottom(xScale);
 	const yAxis = d3.axisLeft(yScale);
-
 	FRAME2.append("g")
 		.attr("transform", "translate(0," + (height - margin.bottom) + ")")
 		.call(xAxis);
-
 	FRAME2.append("g")
 		.attr("transform", "translate(50,0)")
 		.call(yAxis);
 }
-
 // Tooltip functionality 
 function createTooltip() {
 	const tooltip = d3.select("body").append("div")
@@ -453,9 +411,32 @@ function createTooltip() {
 		.style("pointer-events", "none");
 	return tooltip;
 }
-
-
-zoom()
 build_boston_map();
-bar_chart();
-add_key();
+const header = document.querySelector("#chart_desc");
+const zoomCheckbox = document.getElementById("toggle_zoom");
+zoomCheckbox.addEventListener("change", function() {
+	if (this.checked) {
+		// Checkbox is checked
+		console.log("Zoom is disabled");
+		header.textContent = "Region Accident Location Data";
+		let svg_1 = d3.select("#station_barchart");
+		svg_1.selectAll("*").remove();
+		/* reset canvas */
+		let svg = d3.select("#bostonmap");
+		svg.selectAll("*").remove();
+		build_boston_map(0);
+	}
+	else {
+		// Checkbox is not checked
+		console.log("Zoom is enabled");
+		//header.textContent = "Selected Station Inflow/Outflow Info";
+		let svg_1 = d3.select("#accident_piechart");
+		svg_1.selectAll("*").remove();
+		/* reset canvas */
+		let svg = d3.select("#bostonmap");
+		svg.selectAll("*").remove();
+		build_boston_map(1);
+		bar_chart();
+	}
+});
+
