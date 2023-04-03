@@ -149,9 +149,7 @@ function build_boston_map(toggle_state) {
 					])
 					.on("start brush", brushed))
 		}
-		else {
-			// this is where
-		}
+
 	});
 	if (toggle_state == 0) {
 		d3.csv("data/merged_station_data.csv").then((data) => {
@@ -210,49 +208,31 @@ function build_boston_map(toggle_state) {
 				})
 		});
 	}
-	// Start of legend implementation
-	const keyData = [{
-			label: "Bluebike Stations",
-			color: "#5ddcf9"
-		}
-	];
-	const keyGroup = FRAME1.append("g")
-		.attr("class", "key")
-		.attr("transform", `translate(10, 10)`)
-		.style("position", "absolute");
-	keyGroup.append("rect")
-		.attr("x", -5)
-		.attr("y", -5)
-		.attr("width", 137)
-		.attr("height", 25)
-		.attr("fill", "white")
-		.attr("stroke", "black")
-		.attr("stroke-width", 1);
-	const rectWidth = 10;
-	const rectHeight = 10;
-	const rectSpacing = 5;
-	keyGroup.selectAll("rect.color")
-		.data(keyData)
-		.enter()
-		.append("rect")
-		.attr("class", "color")
-		.attr("x", 0)
-		.attr("y", (d, i) => i * (rectHeight + rectSpacing) + 5)
-		.attr("width", rectWidth)
-		.attr("height", rectHeight)
-		.attr("fill", d => d.color);
-	const textOffset = rectWidth + 5;
-	keyGroup.selectAll("text.label")
-		.data(keyData)
-		.enter()
-		.append("text")
-		.attr("class", "label")
-		.attr("x", textOffset)
-		.attr("y", (d, i) => i * (rectHeight + rectSpacing) + rectHeight)
-		.attr("dy", "0.25em")
-		.text(d => d.label)
-		.attr("font-size", "12px")
-		.attr("fill", "black");
+	// Adding accident color scale legend 
+	const scale = "images/dangerous_gradient.svg";
+	const scaleWidth = 300;
+	const scaleHeight = 300;
+	const scaleX = FRAME_WIDTH - scaleWidth - 10;
+	const scaleY = FRAME_HEIGHT - scaleHeight + 125;
+	FRAME1.append("image")
+	  .attr("x", scaleX)
+	  .attr("y", scaleY)
+	  .attr("width", scaleWidth)
+	  .attr("height", scaleHeight)
+	  .attr("xlink:href", scale);
+
+	// Adding key 
+	const key = "images/Legend.svg";
+	const keyHeight = 130;
+	const keyWidth = 130;
+	const keyX = 5;
+	const keyY = -46;
+	FRAME1.append("image")
+	  .attr("x", keyX)
+	  .attr("y", keyY)
+	  .attr("width", keyWidth)
+	  .attr("height", keyHeight)
+	  .attr("xlink:href", key);
 }
 
 function pie_chart(data, txt) {
@@ -342,7 +322,7 @@ function bar_chart(name, arriving, leaving) {
   		header.textContent = "Hover over station to display data"
   		console.log("it worked");
 	} else {
-		header.textContent = name + ": Daily Inflow/Outflow";	
+		header.textContent = name + ": Monthly Inflow/Outflow";	
 	}
 
 	// resetting bar chart
