@@ -381,7 +381,7 @@ function bar_chart(name, arriving, leaving) {
 		.attr("class", "rect")
 		.attr("id", d => d.catagory)
 		.style("opacity", 0.5)
-		.style("fill", "#4699f5");
+		.style("fill", "#0077b6"); //'#0077b6', '#00b4d8', '#90e0ef'
 	const xAxis = d3.axisBottom(xScale);
 	const yAxis = d3.axisLeft(yScale);
 	FRAME2.append("g")
