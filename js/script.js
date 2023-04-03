@@ -259,7 +259,7 @@ function build_boston_map(toggle_state) {
 		.attr("fill", "black");
 }
 
-function pie_chart(data) {
+function pie_chart(data, txt) {
 	// getting right_col width to make porportional pie chart
 	let right_width = document.getElementById('right_col').clientWidth;
 
@@ -306,6 +306,22 @@ function pie_chart(data) {
 	if (data[0]["count"] == 0) {
 		data.pop()
 	}
+	
+	if (txt == '?'){
+		let data = ['???'];
+		let labels = g.selectAll('text')
+		.data(data)
+		.enter()
+		.append('text')
+		.text(function(d) {
+			return d;
+		})
+		.style('text-anchor', 'middle')
+		.style('font-size', '15px')
+		.style('font-weight', 'bold')
+		.style('fill', 'white');
+	}
+	else {
 	let labels = g.selectAll('text')
 		.data(pie(data))
 		.enter()
@@ -320,7 +336,8 @@ function pie_chart(data) {
 		.style('font-size', '15px')
 		.style('font-weight', 'bold')
 		.style('fill', 'white');
-}
+};
+};
 
 function bar_chart(name, arriving, leaving) {
 	const header = document.querySelector("#chart_desc");
@@ -421,6 +438,20 @@ zoomCheckbox.addEventListener("change", function() {
 		header.textContent = "Region Accident Location Data";
 		let svg_1 = d3.select("#station_barchart");
 		svg_1.selectAll("*").remove();
+		let zero_dict = [{
+			location: 'Street',
+			count: 1
+		},
+		{
+			location: 'Intersection',
+			count: 1
+		},
+		{
+			location: 'Other',
+			count: 1
+		}
+		];
+		pie_chart(zero_dict, '?')
 		/* reset canvas */
 		let svg = d3.select("#bostonmap");
 		svg.selectAll("*").remove();
