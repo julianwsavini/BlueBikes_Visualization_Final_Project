@@ -58,11 +58,7 @@ function build_boston_map(toggle_state) {
 		.attr("stroke-width", "4");
 	if (toggle_state == 1) {
 		let zoom = d3.zoom()
-			.on("zoom", handleZoom)
-			.filter((event) => {
-				return !event.button && (event.type === 'wheel' || event.type === 'touchmove');
-			});
-
+			.on("zoom", handleZoom);
 		function handleZoom(e) {
 			FRAME1.selectAll("image, g, circle")
 				.attr("transform", e.transform);
@@ -93,8 +89,8 @@ function build_boston_map(toggle_state) {
 			.enter()
 			.append("image")
 			.attr("id", "bostonplot")
-			.attr("x", (d) => albersProjection([d.long, d.lat])[0])
-			.attr("y", (d) => albersProjection([d.long, d.lat])[1])
+			.attr("x", (d) => albersProjection([d.long, d.lat])[0] - 10)
+			.attr("y", (d) => albersProjection([d.long, d.lat])[1] - 10)
 			.attr("width", 20)
 			.attr("height", 20)
 			.attr("opacity", .1)
@@ -165,7 +161,7 @@ function build_boston_map(toggle_state) {
 				.enter()
 				.append("image")
 				.attr("x", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[0])
-				.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1])
+				.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1] - 2.5)
 				.attr("width", 7)
 				.attr("height", 7)
 				.attr("xlink:href", "images/bluebike.png")
@@ -179,13 +175,15 @@ function build_boston_map(toggle_state) {
 				.enter()
 				.append("image")
 				.attr("x", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[0])
-				.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1])
+				.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1] - 2.5)
 				.attr("width", 7)
 				.attr("height", 7)
 				.attr("xlink:href", "images/bluebike.png")
 				.on("mouseover", (event, d) => {
 					
 					d3.select(event.target)
+						.attr("x", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[0] - 2)
+						.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1] - 5)
                 		.attr("width", 10)
                 		.attr("height", 10);
 
@@ -201,6 +199,8 @@ function build_boston_map(toggle_state) {
 				})
 				.on("mouseout", (event, d) => {
 					d3.select(event.target)
+						.attr("x", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[0])
+						.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1] - 2.5)
                 		.attr("width", 7)
                 		.attr("height", 7);
 
@@ -213,11 +213,7 @@ function build_boston_map(toggle_state) {
 	// Start of legend implementation
 	const keyData = [{
 			label: "Bluebike Stations",
-			color: "#4699f5"
-		},
-		{
-			label: "Bike Crash Locations",
-			color: "red"
+			color: "#5ddcf9"
 		}
 	];
 	const keyGroup = FRAME1.append("g")
@@ -228,7 +224,7 @@ function build_boston_map(toggle_state) {
 		.attr("x", -5)
 		.attr("y", -5)
 		.attr("width", 137)
-		.attr("height", 40)
+		.attr("height", 25)
 		.attr("fill", "white")
 		.attr("stroke", "black")
 		.attr("stroke-width", 1);
