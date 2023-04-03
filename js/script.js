@@ -471,3 +471,9 @@ zoomCheckbox.addEventListener("change", function() {
 	}
 });
 
+// Starting Bar Chart
+let element = document.getElementById("toggle_zoom");
+element.dispatchEvent(new Event("change"));
+
+
+
