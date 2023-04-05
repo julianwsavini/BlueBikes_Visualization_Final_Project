@@ -30,9 +30,7 @@ const neighborhoods_json = {
 	]
 }
 
-// Start of JS implementation
-
-//declare contsants for viz 
+// declare contsants
 const tooltip = createTooltip();
 const FRAME_HEIGHT = 600;
 let FRAME_WIDTH = document.getElementById('left_col').clientWidth;
@@ -42,13 +40,12 @@ const MARGINS = {
 	top: 50,
 	bottom: 50
 }
+// with a scale function
+const VIS_HEIGHT = FRAME_HEIGHT - MARGINS.top - MARGINS.bottom;
+const VIS_WIDTH = FRAME_WIDTH - MARGINS.left - MARGINS.right;
 
-// function to build our main visualization
-// toggle_state: 0 or 1, tells visualization which functionality to support 
-// options are zooming and highlighting stations or tooltips to highlight an area
 function build_boston_map(toggle_state) {
-
-	// Creating frame inside our visualization appending a border to it 
+	// creating frame inside function to enable toggle functionality 
 	const FRAME1 = d3.select("#bostonmap")
 		.append("svg")
 		.attr("height", FRAME_HEIGHT)
@@ -59,8 +56,7 @@ function build_boston_map(toggle_state) {
 		.attr("fill", "rgba(0, 0, 0, 0.1)")
 		.attr("stroke", "black")
 		.attr("stroke-width", "4");
-
-	// allows for zoom when map is in second of two toggle states 
+	// if zoom is selected, allowing zooming functionality
 	if (toggle_state == 1) {
 		let zoom = d3.zoom()
 			.on("zoom", handleZoom);
@@ -71,8 +67,7 @@ function build_boston_map(toggle_state) {
 		d3.select("#bostonmap")
 			.call(zoom);
 	}
-
-	// plotting our geojson map so that we have a clear map of boston
+	// create Albers projection scaling to scale longitude and latitude
 	const g = FRAME1.append("g");
 	const albersProjection = d3.geoAlbers()
 		.scale(190000)
@@ -89,9 +84,8 @@ function build_boston_map(toggle_state) {
 		.attr("stroke", "#282F36")
 		.attr("stroke-width", "1px")
 		.attr("d", geoPath);
-
-	// Add in our points for different bike crashes creating a heatmap type look to the visualization
 	d3.csv("data/Boston_Accidents.csv").then((data) => {
+		// Add circles for each bike crash
 		const plot1 = FRAME1.selectAll("circle")
 			.data(data)
 			.enter()
@@ -103,8 +97,7 @@ function build_boston_map(toggle_state) {
 			.attr("height", 20)
 			.attr("opacity", .1)
 			.attr("xlink:href", "images/red_circle.png");
-
-		// if our visualization is in the first of two states the following code allows for brushing of the accidents
+		// if brusing/linking is selected, create brush
 		if (toggle_state == 0) {
 			function brushed({
 				selection
@@ -114,17 +107,18 @@ function build_boston_map(toggle_state) {
 						[x0, y0],
 						[x1, y1]
 					] = selection;
+					// filter data by what is selected by the user and save into variable 'value'
 					value = plot1
 						.style("opacity", 0.1)
 						.filter(d => {
 							return x0 <= albersProjection([d.long, d.lat])[0] && albersProjection([d.long, d.lat])[0] < x1 && y0 <= albersProjection([d.long, d.lat])[1] && albersProjection([d.long, d.lat])[1] < y1;
 						})
-
-						// takes the highlighted stations and gets the data needed to create a pie chart 
 						.data()
+					// create variables to count how many occurences there are for each type of crash, within the area the user selected
 					let intersectionCount = 0;
 					let streetCount = 0;
 					let otherCount = 0;
+					// for each point in selected area, append to counter variables if the location equals one of the following
 					for (let i = 0; i < value.length; i++) {
 						let loc = value[i]['location_type'];
 						if (loc == "Intersection") {
@@ -137,15 +131,24 @@ function build_boston_map(toggle_state) {
 							otherCount++;
 						}
 					}
-					let dictionary = [{ location: 'Street', count: streetCount},
-									{location: 'Intersection', count: intersectionCount},
-									{location: 'Other', count: otherCount}
+					// create a dictionary with the counts to be used to construct the pie chart
+					let dictionary = [{
+							location: 'Street',
+							count: streetCount
+						},
+						{
+							location: 'Intersection',
+							count: intersectionCount
+						},
+						{
+							location: 'Other',
+							count: otherCount
+						}
 					];
-					// create the pie chart 
 					pie_chart(dictionary);
 				}
 			}
-			// allows for brushing to occur 
+			// call for brush function
 			FRAME1
 				.call(d3.brush()
 					.extent([
@@ -154,10 +157,8 @@ function build_boston_map(toggle_state) {
 					])
 					.on("start brush", brushed))
 		}
-
-	});
-
-	// if visualization is in first of two states only plot stations statically 
+		}
+	);
 	if (toggle_state == 0) {
 		d3.csv("data/merged_station_data.csv").then((data) => {
 			// Add circles for each station
@@ -172,9 +173,6 @@ function build_boston_map(toggle_state) {
 				.attr("xlink:href", "images/bluebike.png")
 		});
 	}
-
-	// if visualization is in second of two states than we print stations but also allow for points to be hovered
-	// over. Points are altered when hovered over and also display station name
 	else {
 		d3.csv("data/merged_station_data.csv").then((data) => {
 			// Add circles for each station
@@ -187,8 +185,9 @@ function build_boston_map(toggle_state) {
 				.attr("width", 7)
 				.attr("height", 7)
 				.attr("xlink:href", "images/bluebike.png")
+				// change point dimensions when user hovers over a point
 				.on("mouseover", (event, d) => {
-					// make station bigger when hovered over 
+					
 					d3.select(event.target)
 						.attr("x", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[0] - 2)
 						.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1] - 5)
@@ -205,6 +204,7 @@ function build_boston_map(toggle_state) {
 						.style("left", (event.pageX + 10) + "px")
 						.style("top", (event.pageY - 10) + "px");
 				})
+				// change point dimensions when user hovers off of a point
 				.on("mouseout", (event, d) => {
 					d3.select(event.target)
 						.attr("x", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[0])
@@ -218,50 +218,66 @@ function build_boston_map(toggle_state) {
 				})
 		});
 	}
-
-	// Adding accident color scale legend 
-	const scale = "images/dangerous_gradient.svg";
-	const scaleWidth = 300;
-	const scaleHeight = 300;
-	const scaleX = FRAME_WIDTH - scaleWidth - 10;
-	const scaleY = FRAME_HEIGHT - scaleHeight + 125;
-	FRAME1.append("image")
-	  .attr("x", scaleX)
-	  .attr("y", scaleY)
-	  .attr("width", scaleWidth)
-	  .attr("height", scaleHeight)
-	  .attr("xlink:href", scale);
-
-	// Adding key for stations 
-	const key = "images/Legend.svg";
-	const keyHeight = 130;
-	const keyWidth = 130;
-	const keyX = 5;
-	const keyY = -46;
-	FRAME1.append("image")
-	  .attr("x", keyX)
-	  .attr("y", keyY)
-	  .attr("width", keyWidth)
-	  .attr("height", keyHeight)
-	  .attr("xlink:href", key);
+	// Start of legend implementation
+	const keyData = [{
+			label: "Bluebike Stations",
+			color: "#5ddcf9"
+		}
+	];
+	const keyGroup = FRAME1.append("g")
+		.attr("class", "key")
+		.attr("transform", `translate(10, 10)`)
+		.style("position", "absolute");
+	keyGroup.append("rect")
+		.attr("x", -5)
+		.attr("y", -5)
+		.attr("width", 137)
+		.attr("height", 25)
+		.attr("fill", "white")
+		.attr("stroke", "black")
+		.attr("stroke-width", 1);
+	const rectWidth = 10;
+	const rectHeight = 10;
+	const rectSpacing = 5;
+	keyGroup.selectAll("rect.color")
+		.data(keyData)
+		.enter()
+		.append("rect")
+		.attr("class", "color")
+		.attr("x", 0)
+		.attr("y", (d, i) => i * (rectHeight + rectSpacing) + 5)
+		.attr("width", rectWidth)
+		.attr("height", rectHeight)
+		.attr("fill", d => d.color);
+	const textOffset = rectWidth + 5;
+	keyGroup.selectAll("text.label")
+		.data(keyData)
+		.enter()
+		.append("text")
+		.attr("class", "label")
+		.attr("x", textOffset)
+		.attr("y", (d, i) => i * (rectHeight + rectSpacing) + rectHeight)
+		.attr("dy", "0.25em")
+		.text(d => d.label)
+		.attr("font-size", "12px")
+		.attr("fill", "black");
 }
 
-// create pie chart
 function pie_chart(data, txt) {
 	// getting right_col width to make porportional pie chart
 	let right_width = document.getElementById('right_col').clientWidth;
 
-	// set up sizing and spacing for chart 
 	let svg = d3.select("#accident_piechart");
 	svg.selectAll("*").remove();
 	const FRAME2 = d3.select("#accident_piechart")
 		.append("svg")
 		.attr("height", right_width)
 		.attr("width", right_width)
-
+	// create container, height, and width variables
 	let container = document.getElementById('right_col');
 	let width = container.clientWidth * 1 - 30;
 	let height = container.clientHeight * 1 - 30;
+	// instantiate pie and radius
 	let pie = d3.pie()
 		.value(function(d) {
 			return d.count;
@@ -278,6 +294,7 @@ function pie_chart(data, txt) {
 		.attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 	FRAME2.attr('width', width)
 		.attr('height', height);
+	// create slices of chart
 	let slices = g.selectAll('path')
 		.data(pie(data))
 		.enter()
@@ -286,8 +303,7 @@ function pie_chart(data, txt) {
 		.attr('fill', function(d) {
 			return color(d.data.location);
 		});
-
-	// gets rid of labels of data if the count is 0 
+	// if any count is equal to zero, do not display a slice
 	if (data[2]["count"] == 0) {
 		data.pop()
 	}
@@ -297,8 +313,7 @@ function pie_chart(data, txt) {
 	if (data[0]["count"] == 0) {
 		data.pop()
 	}
-	
-	// allows for the pie chart to be blank when the page is initialized 
+	// if parameter txt equals ?, create a default chart which contains the '?' text
 	if (txt == '?'){
 		let data = ['???'];
 		let labels = g.selectAll('text')
@@ -313,8 +328,8 @@ function pie_chart(data, txt) {
 		.style('font-weight', 'bold')
 		.style('fill', 'white');
 	}
-	// if not we create the pie chart normally with the highlighted region of the map 
 	else {
+	// if no parameter, create pie chart with counts
 	let labels = g.selectAll('text')
 		.data(pie(data))
 		.enter()
@@ -332,22 +347,20 @@ function pie_chart(data, txt) {
 };
 };
 
-// creates the bar chart 
 function bar_chart(name, arriving, leaving) {
-	// makes the header of the chart 
 	const header = document.querySelector("#chart_desc");
 	if (name === undefined) {
+  		// do something
   		header.textContent = "Hover over station to display data"
   		console.log("it worked");
 	} else {
-		header.textContent = name + ": Monthly Inflow/Outflow";	
+		header.textContent = name + ": Daily Inflow/Outflow";	
 	}
 
 	// resetting bar chart
 	let svg = d3.select("#station_barchart");
 	svg.selectAll("*").remove();
 
-	// checkcs if the parts are empty and sets values to 0 if they are 
 	if (isNaN(leaving)) {
 		leaving = 0;
 	}
@@ -370,8 +383,7 @@ function bar_chart(name, arriving, leaving) {
 		.append("svg")
 		.attr("height", height + margin.bottom)
 		.attr("width", width)
-
-	// Set up dictionary to hold data 
+	// Set up placeholder data
 	let data = [{
 			catagory: 'bikes leaving',
 			count: arriving
@@ -401,7 +413,7 @@ function bar_chart(name, arriving, leaving) {
 		.attr("class", "rect")
 		.attr("id", d => d.catagory)
 		.style("opacity", 0.5)
-		.style("fill", "#0077b6"); //'#0077b6', '#00b4d8', '#90e0ef'
+		.style("fill", "#4699f5");
 	const xAxis = d3.axisBottom(xScale);
 	const yAxis = d3.axisLeft(yScale);
 	FRAME2.append("g")
@@ -411,8 +423,7 @@ function bar_chart(name, arriving, leaving) {
 		.attr("transform", "translate(50,0)")
 		.call(yAxis);
 }
-
-// Tooltip functionality for when stations are hovered over 
+// Tooltip functionality 
 function createTooltip() {
 	const tooltip = d3.select("body").append("div")
 		.attr("class", "tooltip")
@@ -425,13 +436,9 @@ function createTooltip() {
 		.style("pointer-events", "none");
 	return tooltip;
 }
-
-
-// start page by creating the boston map
 build_boston_map();
 const header = document.querySelector("#chart_desc");
 const zoomCheckbox = document.getElementById("toggle_zoom");
-// checks to see what state our toggle bar is at
 zoomCheckbox.addEventListener("change", function() {
 	if (this.checked) {
 		// Checkbox is checked
@@ -439,6 +446,7 @@ zoomCheckbox.addEventListener("change", function() {
 		header.textContent = "Region Accident Location Data";
 		let svg_1 = d3.select("#station_barchart");
 		svg_1.selectAll("*").remove();
+		// when zooming selected, create even slices in pie chart to show user it is not 'in use'
 		let zero_dict = [{
 			location: 'Street',
 			count: 1
@@ -452,8 +460,8 @@ zoomCheckbox.addEventListener("change", function() {
 			count: 1
 		}
 		];
-		// get rid of bar chart, create our piechart, and reset map 
 		pie_chart(zero_dict, '?')
+		/* reset canvas */
 		let svg = d3.select("#bostonmap");
 		svg.selectAll("*").remove();
 		build_boston_map(0);
@@ -461,9 +469,10 @@ zoomCheckbox.addEventListener("change", function() {
 	else {
 		// Checkbox is not checked
 		console.log("Zoom is enabled");
-		// get rid of piechart, reset boston map and create our bar chart 
+		//header.textContent = "Selected Station Inflow/Outflow Info";
 		let svg_1 = d3.select("#accident_piechart");
 		svg_1.selectAll("*").remove();
+		/* reset canvas */
 		let svg = d3.select("#bostonmap");
 		svg.selectAll("*").remove();
 		build_boston_map(1);
@@ -474,6 +483,3 @@ zoomCheckbox.addEventListener("change", function() {
 // Starting Bar Chart
 let element = document.getElementById("toggle_zoom");
 element.dispatchEvent(new Event("change"));
-
-
-
