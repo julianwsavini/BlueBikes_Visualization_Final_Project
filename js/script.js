@@ -246,20 +246,28 @@ function build_boston_map(toggle_state) {
 }
 
 function pie_chart(data, txt) {
-	// getting right_col width to make porportional pie chart
+	// getting right_col width to make proportional pie chart
 	let right_width = document.getElementById('right_col').clientWidth;
+
+	if (right_width > 600) {
+		right_width = 600;
+	}
 
 	let svg = d3.select("#accident_piechart");
 	svg.selectAll("*").remove();
 	const FRAME2 = d3.select("#accident_piechart")
 		.append("svg")
-		.attr("height", right_width)
+		.attr("height", 630)
 		.attr("width", right_width)
+	
 	// create container, height, and width variables	
 	let container = document.getElementById('right_col');
 	let width = container.clientWidth * 1 - 30;
 	let height = container.clientHeight * 1 - 30;
-	// instantiate pie and radius 
+
+	// Calculate vertical offset to center pie chart
+	let verticalOffset = (600 - height) / 2;
+
 	let pie = d3.pie()
 		.value(function(d) {
 			return d.count;
@@ -273,9 +281,10 @@ function pie_chart(data, txt) {
 		}))
 		.range(['#0077b6', '#00b4d8', '#90e0ef']);
 	let g = FRAME2.append('g')
-		.attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
+		.attr('transform', 'translate(' + width / 2 + ',' + (height / 2 + verticalOffset) + ')'); // Update vertical offset
 	FRAME2.attr('width', width)
 		.attr('height', height);
+	
 	// create slices of chart 
 	let slices = g.selectAll('path')
 		.data(pie(data))
@@ -285,6 +294,7 @@ function pie_chart(data, txt) {
 		.attr('fill', function(d) {
 			return color(d.data.location);
 		});
+	
 	// if any count is equal to zero, do not display a slice
 	if (data[2]["count"] == 0) {
 		data.pop()
