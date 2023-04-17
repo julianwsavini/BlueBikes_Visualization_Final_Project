@@ -5,6 +5,7 @@
         <link rel="stylesheet" type="text/css" href="style.css">
         <script src='js/d3.v6.1.1/d3.min.js'></script>    
         <title>Boston Biking Saftey Risk</title>
+        <link rel="icon" type="image/x-icon" href="/images/favicon.png">
     </head>
     <body>
         <h1>Boston Biking Saftey Risk</h1>
@@ -18,33 +19,36 @@
             </p>
         </div>
         <div>
-            <h2>Data Overview</h2>
+            <h1>Background</h1>
+            <h2>Data (pm-03)</h2>
             <p>
                 &emsp;Our tool visualizes where the Bluebikes stations are located in Boston. Additionally, the tool shows where recent bike accidents have occured in Boston. A pie chart will indicate within the selected stations, what are the average durations of bikers? And lastly, a scatter plot will visualize bikes leaving and entering a specific station. We are working with two datasets. The bike accidents in Boston are collected by Vision Zero, and the dataset contains all bike accidents which demanded public health agency. The other data source is from the company Bluebikes. They have data on where each station is located, and the time when each customer rented a bike from a station, and returned a bike from a station.
             </p>
             <p>
                 &emsp;There are a few biases in our data. For one, Vision Zero only reports bike accidents that demanded public health agency. Thus, our visualization tool will only be helpful in identifying areas of Boston where the most severe bike accidents have occured. People who use Bluebikes are given information about how their data is collected, so we would not say their is anything unethical about the way in which they collect information. We found no issues with the quality of our data. Here is the link to access the Vision Zero Crash Data: <a href="https://data.boston.gov/dataset/vision-zero-crash-records">click here</a>. And here is the link to access the Bluebike station data: <a href="https://s3.amazonaws.com/hubway-data/202301-bluebikes-tripdata.zip">click here</a>.
             </p>
+            <h2>Demo Video (pm-06)</h2>
+            <div>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/g8bHHAn-W_g" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <h2>Report (pm-06)</h2>
+            <div id = "centered"><a href="https://docs.google.com/document/d/1wq6s1wg90ikM2ZDn2C8xLXq7VDAENGVu/edit?usp=sharing&ouid=108475381538190819798&rtpof=true&sd=true">Click here to see report.</a></div>
         </div>
-
         <div class = "columns-div">
             <div id = "left_col_1" class = "column">
                 <h1>Boston Map</h1>
-
                 <!-- toggle switch, from: https://www.w3schools.com/howto/howto_css_switch.asp --> 
                 <label class="switch">
                 <input type="checkbox" id = "toggle_zoom"> Zoom 
                 <span class="slider round"> &#8205;</span>  Brushing/Linking
                 </label>
                 <!-- end toggle switch --> 
-
                 <p style = "font-size: 9px;">&#8205;</p>
             </div>
             <div id = "right_col_1" class = "column">
                 <h2 id = "chart_desc">Hover over station to display data</h2>
             </div>
         </div>
-
         <div class = "columns-div">
             <div id = "left_col" class = "column">
                 <div>
@@ -56,7 +60,6 @@
                 <div id="accident_piechart"></div>
             </div>
         </div>
-        
         <div id="footer">
             <h2>Acknowledgements</h2>
             <ul id="Acknowledgements">
@@ -71,6 +74,8 @@
                 <li><a href="http://132.72.155.230:3838/js/geojson-1.html">http://132.72.155.230:3838/js/geojson-1.html</a></li>
                 <li><a href="https://www.sohamkamani.com/javascript/d3-geo-projections/">https://www.sohamkamani.com/javascript/d3-geo-projections/</a></li>
                 <li><a href="https://github.com/d3/d3-geo">https://github.com/d3/d3-geo</a></li>
+                <li><a href="https://www.w3schools.com/css/css3_buttons.asp">https://www.w3schools.com/css/css3_buttons.asp</a></li>
+                <li><a href="https://www.w3schools.com/howto/howto_css_three_columns.asp ">https://www.w3schools.com/howto/howto_css_three_columns.asp</a></li>
             </ul>
         </div>
         <script src= "js/script.js"></script>

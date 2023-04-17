@@ -60,6 +60,7 @@ function build_boston_map(toggle_state) {
 	if (toggle_state == 1) {
 		let zoom = d3.zoom()
 			.on("zoom", handleZoom);
+
 		function handleZoom(e) {
 			FRAME1.selectAll("image, g, circle")
 				.attr("transform", e.transform);
@@ -187,13 +188,12 @@ function build_boston_map(toggle_state) {
 				.attr("xlink:href", "images/bluebike.png")
 				// change point dimensions when user hovers over point
 				.on("mouseover", (event, d) => {
-					
+
 					d3.select(event.target)
 						.attr("x", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[0] - 2)
 						.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1] - 5)
-                		.attr("width", 10)
-                		.attr("height", 10);
-
+						.attr("width", 10)
+						.attr("height", 10);
 
 					bar_chart(d.station_name, d.bikes_leaving, d.bikes_entering)
 					// Show tooltip with the station name on click
@@ -209,8 +209,8 @@ function build_boston_map(toggle_state) {
 					d3.select(event.target)
 						.attr("x", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[0])
 						.attr("y", (d) => albersProjection([d.station_longitude_x, d.station_latitude_x])[1] - 2.5)
-                		.attr("width", 7)
-                		.attr("height", 7);
+						.attr("width", 7)
+						.attr("height", 7);
 
 					tooltip.transition()
 						.duration(200)
@@ -225,11 +225,11 @@ function build_boston_map(toggle_state) {
 	const scaleX = FRAME_WIDTH - scaleWidth - 10;
 	const scaleY = FRAME_HEIGHT - scaleHeight + 125;
 	FRAME1.append("image")
-	  .attr("x", scaleX)
-	  .attr("y", scaleY)
-	  .attr("width", scaleWidth)
-	  .attr("height", scaleHeight)
-	  .attr("xlink:href", scale);
+		.attr("x", scaleX)
+		.attr("y", scaleY)
+		.attr("width", scaleWidth)
+		.attr("height", scaleHeight)
+		.attr("xlink:href", scale);
 
 	// Adding key 
 	const key = "images/Legend.svg";
@@ -238,11 +238,11 @@ function build_boston_map(toggle_state) {
 	const keyX = 5;
 	const keyY = -46;
 	FRAME1.append("image")
-	  .attr("x", keyX)
-	  .attr("y", keyY)
-	  .attr("width", keyWidth)
-	  .attr("height", keyHeight)
-	  .attr("xlink:href", key);
+		.attr("x", keyX)
+		.attr("y", keyY)
+		.attr("width", keyWidth)
+		.attr("height", keyHeight)
+		.attr("xlink:href", key);
 }
 
 function pie_chart(data, txt) {
@@ -295,48 +295,48 @@ function pie_chart(data, txt) {
 	if (data[0]["count"] == 0) {
 		data.pop()
 	}
-	
+
 	// if parameter txt equals ?, create a default chart which contains the '?' text
-	if (txt == '?'){
+	if (txt == '?') {
 		let data = ['???'];
 		let labels = g.selectAll('text')
-		.data(data)
-		.enter()
-		.append('text')
-		.text(function(d) {
-			return d;
-		})
-		.style('text-anchor', 'middle')
-		.style('font-size', '15px')
-		.style('font-weight', 'bold')
-		.style('fill', 'white');
+			.data(data)
+			.enter()
+			.append('text')
+			.text(function(d) {
+				return d;
+			})
+			.style('text-anchor', 'middle')
+			.style('font-size', '15px')
+			.style('font-weight', 'bold')
+			.style('fill', 'white');
 	}
 	else {
-	// if no paramter, create pie chart with conuts
-	let labels = g.selectAll('text')
-		.data(pie(data))
-		.enter()
-		.append('text')
-		.text(function(d) {
-			return d.data.location + ' (' + d.data.count + ')';
-		})
-		.attr('transform', function(d) {
-			return 'translate(' + arc.centroid(d) + ')';
-		})
-		.style('text-anchor', 'middle')
-		.style('font-size', '15px')
-		.style('font-weight', 'bold')
-		.style('fill', 'white');
-};
+		// if no paramter, create pie chart with conuts
+		let labels = g.selectAll('text')
+			.data(pie(data))
+			.enter()
+			.append('text')
+			.text(function(d) {
+				return d.data.location + ' (' + d.data.count + ')';
+			})
+			.attr('transform', function(d) {
+				return 'translate(' + arc.centroid(d) + ')';
+			})
+			.style('text-anchor', 'middle')
+			.style('font-size', '15px')
+			.style('font-weight', 'bold')
+			.style('fill', 'white');
+	};
 };
 
 function bar_chart(name, arriving, leaving) {
 	const header = document.querySelector("#chart_desc");
 	if (name === undefined) {
-  		header.textContent = "Hover over station to display data"
-  		console.log("it worked");
-	} else {
-		header.textContent = name + ": Monthly Inflow/Outflow";	
+		header.textContent = "Hover over station to display data"
+	}
+	else {
+		header.textContent = name + ": Monthly Inflow/Outflow";
 	}
 
 	// resetting bar chart
@@ -395,7 +395,7 @@ function bar_chart(name, arriving, leaving) {
 		.attr("class", "rect")
 		.attr("id", d => d.catagory)
 		.style("opacity", 0.5)
-		.style("fill", "#0077b6"); 
+		.style("fill", "#0077b6");
 	const xAxis = d3.axisBottom(xScale);
 	const yAxis = d3.axisLeft(yScale);
 	FRAME2.append("g")
@@ -424,22 +424,21 @@ const zoomCheckbox = document.getElementById("toggle_zoom");
 zoomCheckbox.addEventListener("change", function() {
 	if (this.checked) {
 		// Checkbox is checked
-		console.log("Zoom is disabled");
 		header.textContent = "Region Accident Location Data";
 		let svg_1 = d3.select("#station_barchart");
 		svg_1.selectAll("*").remove();
 		let zero_dict = [{
-			location: 'Street',
-			count: 1
-		},
-		{
-			location: 'Intersection',
-			count: 1
-		},
-		{
-			location: 'Other',
-			count: 1
-		}
+				location: 'Street',
+				count: 1
+			},
+			{
+				location: 'Intersection',
+				count: 1
+			},
+			{
+				location: 'Other',
+				count: 1
+			}
 		];
 		pie_chart(zero_dict, '?')
 		/* reset canvas */
@@ -449,8 +448,6 @@ zoomCheckbox.addEventListener("change", function() {
 	}
 	else {
 		// Checkbox is not checked
-		console.log("Zoom is enabled");
-		//header.textContent = "Selected Station Inflow/Outflow Info";
 		let svg_1 = d3.select("#accident_piechart");
 		svg_1.selectAll("*").remove();
 		/* reset canvas */

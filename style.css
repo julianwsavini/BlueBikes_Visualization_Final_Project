@@ -19,6 +19,17 @@ body {
      padding: 5px;
 }
 
+#centered {
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+}
+
+iframe {
+    margin: 0 auto;
+    display:block;
+}
+
 /* 
 Referenced w3schools to create .columns and .column-div class styling 
 https://www.w3schools.com/howto/howto_css_three_columns.asp 
@@ -91,7 +102,6 @@ https://www.w3schools.com/howto/howto_css_three_columns.asp
 Toggle switch CSS
 Taken / modified from: https://www.w3schools.com/howto/howto_css_switch.asp
 */ 
-
 .switch input[type="checkbox"] {
   display: none;
 }
