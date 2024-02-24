@@ -8,3 +8,5 @@ Check out our website here: [BlueBike Traffic/Accident Analysis](https://ds4200-
 
 # What I contributed:
 Once my group had created the heatmap, I was responsible for making the bar and pie chart, and linking these charts to the heat map such that they were interactive. This involved creating tooltips, brushing and linking, and hovering over elements to regenerate new graphs. I also was a large part of the design process, where I was accessing who our stakeholders are, and what visualizations could be used to help in their decision making of where BlueBike stations should be to ensure safety.
+
+Technologies I used: HTML, CSS, Javascript (d3 library)
