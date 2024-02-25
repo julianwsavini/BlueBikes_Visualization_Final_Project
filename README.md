@@ -1,7 +1,6 @@
 # This is the group project I completed for DS4200: Data Visualization and Presentation.
 
-We were tasked with creating data visualizations that can be of use to a designated stakeholder. We designed an interactive graph for the team at BlueBikes responsible for deploying stations. Our visualizations used bike accident data paired with station data, to hopefully ensure safety of the BlueBikes customers.
-The first graph is a heat map of bike accidents, with points of where stations are located. If you hover over the points, you can see the in and out flow of each station. If you switch modes, you can drag your mouse over the left graph to see where accidents are occuring (street versus intersection). This data can be of use to our stakeholders, who can hopefully use this to carefully place stations away from hazardous areas.
+We were tasked with creating data visualizations to be used by a designated stakeholder. We designed an interactive graph for the team at BlueBikes that is responsible for establishing station locations. Our visualizations used bike accident data paired with station data, to hopefully increase safety for BlueBikes customers. The first graph is a heat map of bike accidents with points where stations are located. Hovering over the points shows the in- and out-flow of each station. If you switch modes, you can drag your mouse over the left graph to see where accidents occur (street versus intersection). This data can be used by BlueBikes when determining station locationsfarther from hazardous areas.
 
 # Project Link:
 Check out our website here: [BlueBike Traffic/Accident Analysis](https://ds4200-s23-class.github.io/project-julian-jake-david-aneek/)
