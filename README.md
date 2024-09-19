@@ -4,9 +4,10 @@
 1. [Project Overview](#project-overview)
 2. [What I Contributed](#what-i-contributed)
 3. [Project Link](#project-link)
-4. [Folder Structure](#folder-structure)
-5. [About the Data](#about-the-data)
-6. [References](#references)
+4. [About the Data](#about-the-data)
+5. [Contributors](#contributors)
+6. [Folder Structure](#folder-structure)
+7. [References](#references)
 
 ## Project Overview
 We completed this group project for DS4200: Data Visualization and Presentation. The task was to create data visualizations for a designated stakeholder, and we designed an interactive visualization for the BlueBikes team responsible for station locations. The visualizations combined bike accident data with station data to improve customer safety.
@@ -25,6 +26,29 @@ Technologies used: **HTML, CSS, JavaScript (d3 library)**
 
 ## Project Link
 Check out our website here: [BlueBike Traffic/Accident Analysis](https://ds4200-s23-class.github.io/project-julian-jake-david-aneek/)
+
+## About the Data
+We used the following data sources for this project:
+
+Bike Accident Data: Boston_Accidents.csv contains information about bike accidents in Boston, including the location, date, and severity of the accidents.
+BlueBikes Station Data: This includes station information in multiple files, such as Jan2023_station_data.csv, end_station_data.csv, start_station_data.csv, and merged_station_data.csv, which provide details on station locations and bike inflow/outflow.
+Map Data: The file boston_map.json contains geographic information for rendering the base map of Boston.
+Our goal was to merge accident data with BlueBikes station locations to help identify hazardous areas and guide safer station placements.
+
+## Contributors
+
+All contributors were undergraduate students at Northeastern University.
+
+Julian Savini
+Email: savini.j@northeastern.edu
+
+Aneek Mahajan
+Email: mahajan.a@northeastern.edu
+
+Jake Ashkenase
+Email: ashkenase.j@northeastern.edu
+
+This was the final project for the course DS 4200 - Data Visualization and Presentation (Spring 2023), at Northeastern University
 
 ## Folder Structure
 ```plaintext
@@ -59,3 +83,8 @@ project-julian-jake-david-aneek/
 ├── README.md                # This file
 ├── index.html               # Main webpage
 └── style.css                # Custom styles for visualizations
+```
+
+## References
+BlueBikes Station Data: BlueBikes Official
+Bike Accident Data: City of Boston Open Data Portal
