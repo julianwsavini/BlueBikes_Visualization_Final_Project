@@ -87,5 +87,16 @@ project-julian-jake-david-aneek/
 ```
 
 ## References
-BlueBikes Station Data: BlueBikes Official
-Bike Accident Data: City of Boston Open Data Portal
+1. [HTML Structure Example](https://github.com/DS4200-S23-Class/hw-06-aneek-and-jake/blob/master/index.html)
+2. [D3.js Zoom and Pan Tutorial](https://www.d3indepth.com/zoom-and-pan/)
+3. [D3.js Brush Interactivity Example](https://d3-graph-gallery.com/graph/interactivity_brush.html)
+4. [Creating Tooltips in D3.js](https://www.pluralsight.com/guides/create-tooltips-in-d3js)
+5. [D3.js Line and Points on Map from CSV Data](https://stackoverflow.com/questions/47917730/d3-line-and-points-on-map-from-csv-data)
+6. [D3.js Mapping Tutorial](https://maptimeboston.github.io/d3-maptime/#/)
+7. [Vision Zero Crash Records Dataset](https://data.boston.gov/dataset/vision-zero-crash-records)
+8. [CSS Switch Tutorial](https://www.w3schools.com/howto/howto_css_switch.asp)
+9. [GeoJSON Example with D3.js](http://132.72.155.230:3838/js/geojson-1.html)
+10. [D3.js Geo Projections Tutorial](https://www.sohamkamani.com/javascript/d3-geo-projections/)
+11. [D3-Geo GitHub Repository](https://github.com/d3/d3-geo)
+12. [CSS Buttons Tutorial](https://www.w3schools.com/css/css3_buttons.asp)
+13. [CSS Three-Column Layout Tutorial](https://www.w3schools.com/howto/howto_css_three_columns.asp)
