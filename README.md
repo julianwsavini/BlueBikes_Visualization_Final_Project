@@ -9,19 +9,26 @@
 6. [Folder Structure](#folder-structure)
 7. [References](#references)
 
-## Project Overview
-This webpage is intended to help BlueBikes employees ensure the safety of BlueBikes users. Our product visualizes where bikes accidents are occuring in Boston. The webpage contains three visualizations. The first visualization displays a heatmap of bike accidents in Boston, and bike station points. Hovering over the points reveals the in- and out-flow of each station. Bluebikes employees can use this information to identify how frequent these bike stops are visited, and identify which bikestops need the most attention.
+# Project Overview
 
-By switching modes, users can explore accidents at intersections versus streets. This tool can assist BlueBikes in placing stations in safer areas. For further exploration, users can highlight an area over the heatmap, which then shows the total number of accidents that occured in intersections and/or streets.
+This webpage helps BlueBikes employees ensure user safety by visualizing bike accidents in Boston. It features three key visualizations:
 
-## What I Contributed
-I was responsible for developing the bar and pie charts, and for linking these charts to the heatmap to create an interactive experience. This involved:
-- Creating tooltips
-- Creating the pie chart and bar chart
-- Implementing brushing and linking
-- Enabling hover actions to regenerate new graphs
+1. A heatmap of bike accidents with station points. Hovering over points reveals station in- and out-flow, helping identify high-traffic stations needing attention.
 
-I also contributed significantly to the design process, assessing stakeholder needs and determining the most relevant visualizations for safe station placement.
+2. A mode switch to compare accidents at intersections versus streets, aiding safer station placement.
+
+3. An interactive feature allowing users to highlight areas on the heatmap, displaying accident totals for intersections and streets within the selection.
+
+## My Contributions
+
+I developed the bar and pie charts and linked them to the heatmap for interactivity. This work included:
+
+* Creating tooltips
+* Generating pie and bar charts
+* Implementing brushing and linking
+* Enabling hover actions to update graphs
+
+I also led the design process, assessing stakeholder needs and selecting relevant visualizations for safe station placement.
 
 Technologies used: **HTML, CSS, JavaScript (d3 library)**
 
