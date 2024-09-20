@@ -10,13 +10,14 @@
 7. [References](#references)
 
 ## Project Overview
-We completed this group project for DS4200: Data Visualization and Presentation. The task was to create data visualizations for a designated stakeholder, and we designed an interactive visualization for the BlueBikes team responsible for station locations. The visualizations combined bike accident data with station data to improve customer safety.
+This webpage is intended to help BlueBikes employees ensure the safety of BlueBikes users. Our product visualizes where bikes accidents are occuring in Boston. The webpage contains three visualizations. The first visualization displays a heatmap of bike accidents in Boston, and bike station points. Hovering over the points reveals the in- and out-flow of each station. Bluebikes employees can use this information to identify how frequent these bike stops are visited, and identify which bikestops need the most attention.
 
-Our project features a heat map showing bike accidents, along with points representing station locations. Hovering over the points reveals the in- and out-flow of each station. By switching modes, users can explore accidents at intersections versus streets. This tool can assist BlueBikes in placing stations in safer areas.
+By switching modes, users can explore accidents at intersections versus streets. This tool can assist BlueBikes in placing stations in safer areas. For further exploration, users can highlight an area over the heatmap, which then shows the total number of accidents that occured in intersections and/or streets.
 
 ## What I Contributed
 I was responsible for developing the bar and pie charts, and for linking these charts to the heatmap to create an interactive experience. This involved:
 - Creating tooltips
+- Creating the pie chart and bar chart
 - Implementing brushing and linking
 - Enabling hover actions to regenerate new graphs
 
